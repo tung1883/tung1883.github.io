@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="assets/pepe-logo.png">
+<title>tung1883 ~ portfolio</title>
+<style>
+:root{
+  --bg:#111;
+  --panel:rgba(18,20,18,0.6);
+  --panel2:rgba(24,27,24,0.68);
+  --fg:#f0f0f0;
+  --dim:#888;
+  --dim2:#666;
+  --accent:#64d2ff;
+  --err:#ff5f57;
+  --warn:#febc2e;
+  --ok:#28c840;
+  --border:#333;
+}
+:root[data-theme="light"]{
+  --bg:#f4f4f2;
+  --panel:rgba(255,255,255,0.72);
+  --panel2:rgba(234,234,230,0.8);
+  --fg:#1a1a1a;
+  --dim:#555;
+  --dim2:#888;
+  --accent:#0077c2;
+  --err:#d9342b;
+  --warn:#b4860b;
+  --ok:#1a8f3c;
+  --border:#d6d6d2;
+}
+*{box-sizing:border-box;}
+html,body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:14px;
+  line-height:1.6;
+}
+body{
+  padding:40px 16px 80px;
+}
+.layout{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  gap:32px;
+  max-width:1180px;
+  margin:0 auto;
+}
+.content{flex:1;min-width:0;max-width:860px;}
+.toc{
+  width:130px;
+  flex-shrink:0;
+  position:sticky;
+  top:40px;
+  font-size:12px;
+}
+.toc .root{
+  display:block;
+  color:var(--fg);
+  font-weight:600;
+  border-bottom:none;
+  margin-bottom:6px;
+}
+.toc .root:hover{color:var(--accent);}
+.toc .root.active{color:var(--accent);}
+.toc a.leaf{
+  display:block;
+  color:var(--dim);
+  border-bottom:none;
+  padding:3px 0;
+  white-space:pre;
+}
+.toc a.leaf .branch{color:var(--dim2);}
+.toc a.leaf:hover{color:var(--fg);}
+.toc a.leaf.active{color:var(--accent);}
+.toc a.leaf.active .branch{color:var(--accent);}
+@media (max-width:900px){
+  .toc{display:none;}
+}
+.social{
+  width:130px;
+  flex-shrink:0;
+  position:sticky;
+  top:40px;
+  font-size:12px;
+}
+.social .root{
+  display:block;
+  color:var(--fg);
+  font-weight:600;
+  border-bottom:none;
+  margin-bottom:6px;
+}
+.social a.leaf{
+  display:block;
+  color:var(--dim);
+  border-bottom:none;
+  padding:3px 0;
+  white-space:pre;
+}
+.social a.leaf .branch{color:var(--dim2);}
+.social a.leaf:hover{color:var(--accent);}
+.social-icon{vertical-align:-2px;margin-right:4px;}
+@media (max-width:1100px){
+  .social{display:none;}
+}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;}
+a:hover{border-bottom-color:var(--accent);}
+
+.window{
+  background:var(--panel);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:28px;
+}
+.titlebar{
+  background:var(--panel2);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  border-bottom:1px solid var(--border);
+}
+.dots{display:flex;gap:7px;}
+.dots span{width:11px;height:11px;border-radius:50%;display:block;}
+.dots .c1{background:#ff5f57;}
+.dots .c2{background:#febc2e;}
+.dots .c3{background:#28c840;}
+.titlebar .name{color:var(--dim);font-size:12px;margin:0 auto;display:inline-flex;align-items:center;gap:5px;}
+.ghostty-icon{width:14px;height:14px;border-radius:3px;vertical-align:-2px;}
+#theme-toggle{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--dim);
+  border-radius:4px;
+  width:22px;
+  height:22px;
+  font-size:12px;
+  line-height:1;
+  cursor:pointer;
+  flex-shrink:0;
+}
+#theme-toggle:hover{color:var(--accent);border-color:var(--accent);}
+
+.neofetch{display:flex;gap:28px;align-items:center;flex-wrap:wrap;padding:8px 0 14px;}
+.neofetch pre{color:var(--accent);line-height:1.15;font-size:11px;margin:0;flex-shrink:0;}
+.nf-logo{width:88px;height:88px;border-radius:50%;flex-shrink:0;}
+.neofetch .nf-info{min-width:220px;}
+.neofetch .nf-info div{margin:0 0 2px;}
+.nf-key{color:var(--ok);font-weight:600;}
+.nf-name{color:var(--fg);font-weight:700;font-size:16px;margin-bottom:6px !important;}
+.nf-swatch{display:flex;gap:5px;margin-top:10px;}
+.nf-swatch span{width:16px;height:16px;border-radius:3px;display:inline-block;}
+
+.prompt{color:var(--dim2);}
+.prompt .user{color:var(--ok);}
+.prompt .path{color:var(--accent);}
+.cursor{
+  display:inline-block;
+  width:7px;height:14px;
+  background:var(--fg);
+  vertical-align:-2px;
+  margin-left:2px;
+  animation:blink 1s steps(1) infinite;
+}
+.cursor.idle{animation:blink 1s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+#term-body{
+  padding:20px 24px;
+  cursor:text;
+  height:320px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+#term-body::-webkit-scrollbar{width:6px;}
+#term-body::-webkit-scrollbar-track{background:transparent;}
+#term-body::-webkit-scrollbar-thumb{
+  background:var(--border);
+  border-radius:99px;
+  border:1px solid transparent;
+  background-clip:content-box;
+}
+#term-body::-webkit-scrollbar-thumb:hover{background:var(--dim2);background-clip:content-box;}
+#term-log{white-space:pre-wrap;word-break:break-word;}
+#term-log .line{margin:0 0 4px;}
+#term-log a{color:var(--accent);}
+#term-log .err{color:var(--err);}
+#term-log .hint{color:var(--dim2);}
+.term-table-cols{display:flex;gap:28px;flex-wrap:wrap;margin:2px 0 6px;}
+.term-table{border-collapse:collapse;white-space:normal;margin:0;}
+.term-table td{padding:2px 16px 2px 0;vertical-align:top;}
+.term-table td.perm{color:var(--dim2);font-size:11px;white-space:nowrap;}
+.term-table td.name{color:var(--fg);font-weight:600;white-space:nowrap;}
+.term-table td.stack{color:var(--accent);font-size:12px;white-space:nowrap;}
+.term-table thead td{color:var(--dim2);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);padding-bottom:6px;font-weight:400;}
+#term-line{display:flex;align-items:center;}
+#term-line .typed{white-space:pre;}
+#term-input{
+  position:fixed;
+  top:0;left:0;
+  opacity:0;
+  pointer-events:none;
+  width:1px;height:1px;
+  border:none;
+}
+
+section{margin-bottom:28px;}
+.page-section{display:none;}
+.page-section.active{display:block;}
+#back-link{
+  display:none;
+  color:var(--dim);
+  border-bottom:none;
+  font-size:13px;
+  margin-bottom:20px;
+}
+#back-link:hover{color:var(--accent);}
+#back-link.visible{display:inline-block;}
+h2{
+  color:var(--dim);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin:0 0 12px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.about p{margin:0 0 10px;color:var(--fg);}
+.about p:last-child{margin:0;}
+.about{padding:20px 24px;}
+
+table.ls{width:100%;border-collapse:collapse;}
+table.ls td{
+  vertical-align:top;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+table.ls tr:last-child td{border-bottom:none;}
+table.ls tr{padding:0 24px;}
+table.ls td:first-child{padding-left:24px;}
+table.ls td:last-child{padding-right:24px;}
+table.ls td.perm{color:var(--dim2);white-space:nowrap;padding-right:28px;font-size:12px;}
+table.ls td.name{color:var(--fg);white-space:nowrap;font-weight:600;padding-right:18px;}
+td.name a{color:var(--fg);border-bottom:1px solid var(--border);}
+td.name a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+table.ls td.stack{color:var(--accent);white-space:nowrap;padding-right:18px;font-size:12px;}
+table.ls tr.ls-head td{color:var(--dim2);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:400;padding-top:16px;padding-bottom:8px;}
+td.desc{color:var(--dim);}
+.proj-wrap{padding-top:4px;padding-bottom:4px;}
+
+footer{
+  color:var(--dim2);
+  font-size:12px;
+  padding:20px 24px;
+}
+.contact a{display:block;margin-bottom:10px;color:var(--dim);}
+.contact a:hover{color:var(--accent);}
+
+@media (max-width:640px){
+  table.ls td{display:block;padding:2px 24px;}
+  table.ls tr{display:block;padding:14px 0;border-bottom:1px solid var(--border);}
+  table.ls td{border-bottom:none;}
+  td.perm{display:none;}
+  td.name,td.stack{padding-right:0;}
+}
+::selection{background:var(--accent);color:#111;}
+
+#grid-floor{
+  position:fixed;
+  left:-50%;
+  right:-50%;
+  bottom:-5vh;
+  width:200%;
+  height:60vh;
+  z-index:0;
+  opacity:0.85;
+  pointer-events:none;
+  box-shadow:inset 0 0 120px rgba(23,217,164,0.5);
+  background-image:
+    linear-gradient(rgba(23,217,164,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,217,164,1) 1px, transparent 1px);
+  background-size:40px 40px;
+  transform:perspective(800px) rotateX(55deg);
+  transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(to top, black 0%, transparent 92%);
+  mask-image:linear-gradient(to top, black 0%, transparent 92%);
+}
+
+#term-log .boot-line{color:var(--ok);text-shadow:0 0 5px rgba(77,255,130,0.5);}
+:root[data-theme="light"] #term-log .boot-line{text-shadow:none;}
+</style>
+<script>
+try{
+  if(localStorage.getItem("theme") === "light"){
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+}catch(e){}
+</script>
+</head>
+<body>
+
+<div id="grid-floor"></div>
+
+<div class="layout">
+<nav class="toc">
+  <a href="#home" class="root" id="toc-home">home/</a>
+  <a href="#about" class="leaf"><span class="branch">├── </span>about</a>
+  <a href="#projects" class="leaf"><span class="branch">├── </span>projects</a>
+  <a href="#contact" class="leaf"><span class="branch">└── </span>contact</a>
+</nav>
+<main class="content">
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dots"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
+    <span class="name"><img class="ghostty-icon" src="assets/ghostty.png" alt="ghostty"> tung1883 — ghostty</span>
+    <button id="theme-toggle" type="button" aria-label="Toggle light/dark theme" title="toggle theme">&#9728;</button>
+  </div>
+  <div id="term-body">
+    <div id="term-log"></div>
+    <div id="term-line">
+      <span class="prompt"><span class="user">tung1883</span>@<span class="path">home</span> $</span>&nbsp;<span class="typed" id="term-typed"></span><span class="cursor"></span>
+    </div>
+    <input id="term-input" autocomplete="off" autocapitalize="off" spellcheck="false">
+  </div>
+</div>
+
+<a href="#home" id="back-link">&larr; go back</a>
+
+<section id="about" class="page-section">
+  <h2>about</h2>
+  <div class="window about">
+    <p>I write software that talks to hardware it wasn't supposed to talk to (headphones, phones,
+    APFS disks) and tools that get out of my own way (terminal docs, download managers, a quiz bank
+    for a uni course). Mostly solo, mostly Rust/TS, occasionally dragged into trading bots at 2am.</p>
+    <p>GitHub: <a href="https://github.com/tung1883" target="_blank" rel="noopener">github.com/tung1883</a></p>
+  </div>
+</section>
+
+<section id="projects" class="page-section">
+  <h2>projects</h2>
+  <div class="window">
+    <table class="ls">
+      <tr class="ls-head">
+        <td class="perm">perm</td>
+        <td class="name">name</td>
+        <td class="stack">stack</td>
+        <td class="desc">desc</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/block" target="_blank" rel="noopener">block</a></td>
+        <td class="stack">rust</td>
+        <td class="desc">Reads &amp; writes APFS (Mac-formatted) disks on Windows natively — no VM, no driver. Drag-and-drop UI, PC ↔ Mac disk sync.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/luedd" target="_blank" rel="noopener">lüdd</a></td>
+        <td class="stack">rust / tauri</td>
+        <td class="desc">Download manager — desktop app, CLI, browser extension. Plain HTTP, HLS and DASH, with muxing and quality probing.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/plain" target="_blank" rel="noopener">plain</a></td>
+        <td class="stack">android / kotlin</td>
+        <td class="desc">Turns a smartphone back into a brick. Plain home screen, flagged-app gating with a countdown before you can open the addictive stuff.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/plaind" target="_blank" rel="noopener">plaind</a></td>
+        <td class="stack">rust</td>
+        <td class="desc">Companion daemon for Plain's dev plugin — one TCP socket carrying an interactive shell, low-fi screen mirror and process list to the phone.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/pman" target="_blank" rel="noopener">pman</a></td>
+        <td class="stack">rust</td>
+        <td class="desc">man-page-style docs in your terminal for languages and tools you actually use — C, JS, Python, Rust, Go, Zig, installable per-pack.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/spiel" target="_blank" rel="noopener">spiel</a></td>
+        <td class="stack">python / textual</td>
+        <td class="desc">TypeRacer and chess, in the terminal. Plays real typeracer.com guest races by talking to its binary action protocol directly.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/ugreen-desktop-gui" target="_blank" rel="noopener">ugreen-desktop-gui</a></td>
+        <td class="stack">python</td>
+        <td class="desc">Reverse-engineered desktop GUI for UGREEN Studio Pro headphones — a Windows control panel that doesn't officially exist.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/meridian" target="_blank" rel="noopener">marvo</a></td>
+        <td class="stack">react native</td>
+        <td class="desc">Locket-style daily-clip camera app — 3s countdown, hands-free capture, nightly ffmpeg reel export with burned-in timestamps.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/telecord" target="_blank" rel="noopener">telecord</a></td>
+        <td class="stack">node / express</td>
+        <td class="desc">CDN backend that stores file bytes across Telegram &amp; Discord for redundancy while Supabase holds the metadata. Admin panel + share links.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/claude-cockpit" target="_blank" rel="noopener">claude-multi-cockpit</a></td>
+        <td class="stack">node</td>
+        <td class="desc">Small local companion for running multiple Claude Code profiles side by side — account isolation, transcript handoff, no API proxy.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwxr-xr-x</td>
+        <td class="name"><a href="https://github.com/tung1883/uet-netos" target="_blank" rel="noopener">uet-netos</a></td>
+        <td class="stack">node / static</td>
+        <td class="desc">Public question bank for a uni "network OS practice" course, plus a general Linux-commands reference. Published on GitHub Pages.</td>
+      </tr>
+      <tr>
+        <td class="perm">rwx------</td>
+        <td class="name">mt5-bot</td>
+        <td class="stack">mql5 (private)</td>
+        <td class="desc">Trend-pullback expert advisor for MetaTrader 5. Headless strategy-tester loop, first backtest profit factor 0.79.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section id="contact" class="page-section">
+  <h2>contact</h2>
+  <div class="window">
+    <footer>
+      <p class="contact">
+        <a href="https://github.com/tung1883" target="_blank" rel="noopener"><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> github.com/tung1883</a>
+        <a href="https://x.com/tung1883" target="_blank" rel="noopener"><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M9.53 6.78 15.3 0h-1.37l-5 5.82L5.05 0H.1l6.06 8.73L.1 16h1.37l5.3-6.15L10.95 16h4.95L9.53 6.78Zm-1.88 2.18-.61-.88L2.14 1.04h2.1l3.94 5.63.61.88 5.12 7.32H10.8L7.65 8.96Z"/></svg> x.com/tung1883</a>
+        <a href="https://tung1883.substack.com" target="_blank" rel="noopener"><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M1 0h14v2.5H1V0Zm0 4.5h14V7H1V4.5ZM1 9h14v7L8 12.2 1 16V9Z"/></svg> tung1883.substack.com</a>
+      </p>
+    </footer>
+  </div>
+</section>
+
+</main>
+<nav class="social">
+  <span class="root">links/</span>
+  <a href="https://github.com/tung1883" target="_blank" rel="noopener" class="leaf"><span class="branch">├── </span><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github</a>
+  <a href="https://x.com/tung1883" target="_blank" rel="noopener" class="leaf"><span class="branch">├── </span><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M9.53 6.78 15.3 0h-1.37l-5 5.82L5.05 0H.1l6.06 8.73L.1 16h1.37l5.3-6.15L10.95 16h4.95L9.53 6.78Zm-1.88 2.18-.61-.88L2.14 1.04h2.1l3.94 5.63.61.88 5.12 7.32H10.8L7.65 8.96Z"/></svg>x.com</a>
+  <a href="https://tung1883.substack.com" target="_blank" rel="noopener" class="leaf"><span class="branch">└── </span><svg class="social-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M1 0h14v2.5H1V0Zm0 4.5h14V7H1V4.5ZM1 9h14v7L8 12.2 1 16V9Z"/></svg>substack</a>
+</nav>
+</div>
+
+<script>
+(function(){
+
+  var themeBtn = document.getElementById("theme-toggle");
+  function syncThemeBtn(){
+    themeBtn.innerHTML = document.documentElement.getAttribute("data-theme") === "light" ? "&#9789;" : "&#9728;";
+  }
+  syncThemeBtn();
+  themeBtn.addEventListener("click", function(){
+    var isLight = document.documentElement.getAttribute("data-theme") === "light";
+    if(isLight){
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+    try{ localStorage.setItem("theme", isLight ? "dark" : "light"); }catch(e){}
+    syncThemeBtn();
+  });
+
+  var PROJECTS = [
+    {name:"block", stack:"rust", url:"https://github.com/tung1883/block",
+      desc:"Reads & writes APFS (Mac-formatted) disks on Windows natively — no VM, no driver. Drag-and-drop UI, PC <-> Mac disk sync."},
+    {name:"luedd", stack:"rust / tauri", url:"https://github.com/tung1883/luedd",
+      desc:"Download manager — desktop app, CLI, browser extension. Plain HTTP, HLS and DASH, with muxing and quality probing."},
+    {name:"plain", stack:"android / kotlin", url:"https://github.com/tung1883/plain",
+      desc:"Turns a smartphone back into a brick. Plain home screen, flagged-app gating with a countdown before you can open the addictive stuff."},
+    {name:"plaind", stack:"rust", url:"https://github.com/tung1883/plaind",
+      desc:"Companion daemon for Plain's dev plugin — one TCP socket carrying an interactive shell, low-fi screen mirror and process list to the phone."},
+    {name:"pman", stack:"rust", url:"https://github.com/tung1883/pman",
+      desc:"man-page-style docs in your terminal for languages and tools you actually use — C, JS, Python, Rust, Go, Zig, installable per-pack."},
+    {name:"spiel", stack:"python / textual", url:"https://github.com/tung1883/spiel",
+      desc:"TypeRacer and chess, in the terminal. Plays real typeracer.com guest races by talking to its binary action protocol directly."},
+    {name:"ugreen-desktop-gui", stack:"python", url:"https://github.com/tung1883/ugreen-desktop-gui",
+      desc:"Reverse-engineered desktop GUI for UGREEN Studio Pro headphones — a Windows control panel that doesn't officially exist."},
+    {name:"marvo", stack:"react native", url:"https://github.com/tung1883/meridian",
+      desc:"Locket-style daily-clip camera app — 3s countdown, hands-free capture, nightly ffmpeg reel export with burned-in timestamps."},
+    {name:"telecord", stack:"node / express", url:"https://github.com/tung1883/telecord",
+      desc:"CDN backend that stores file bytes across Telegram & Discord for redundancy while Supabase holds the metadata. Admin panel + share links."},
+    {name:"claude-multi-cockpit", stack:"node", url:"https://github.com/tung1883/claude-cockpit",
+      desc:"Small local companion for running multiple Claude Code profiles side by side — account isolation, transcript handoff, no API proxy."},
+    {name:"uet-netos", stack:"node / static", url:"https://github.com/tung1883/uet-netos",
+      desc:"Public question bank for a uni \"network OS practice\" course, plus a general Linux-commands reference. Published on GitHub Pages."},
+    {name:"mt5-bot", stack:"mql5 (private)", perm:"rwx------", url:null,
+      desc:"Trend-pullback expert advisor for MetaTrader 5. Headless strategy-tester loop, first backtest profit factor 0.79."}
+  ];
+
+  var log = document.getElementById("term-log");
+  var typed = document.getElementById("term-typed");
+  var input = document.getElementById("term-input");
+  var body = document.getElementById("term-body");
+  var history = [];
+  var histPos = 0;
+
+  function esc(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function printLine(html, cls){
+    var p = document.createElement("div");
+    p.className = "line" + (cls ? " " + cls : "");
+    p.innerHTML = html;
+    log.appendChild(p);
+  }
+  function printCmd(cmd){
+    printLine('<span class="prompt"><span class="user">tung1883</span>@<span class="path">home</span> $</span>&nbsp;' + esc(cmd));
+  }
+  function findProject(name){
+    name = (name || "").toLowerCase();
+    return PROJECTS.filter(function(p){ return p.name.toLowerCase().indexOf(name) !== -1; });
+  }
+  function showSection(name){
+    var showAll = (name === "home");
+    document.querySelectorAll(".page-section").forEach(function(el){
+      el.classList.toggle("active", showAll || el.id === name);
+    });
+    document.querySelectorAll(".toc a.leaf").forEach(function(a){
+      a.classList.toggle("active", !showAll && a.getAttribute("href") === "#" + name);
+    });
+    document.getElementById("toc-home").classList.toggle("active", showAll);
+    document.getElementById("back-link").classList.toggle("visible", !showAll);
+  }
+
+  var SECTIONS = [
+    {name:"about", desc:"who's behind the keyboard"},
+    {name:"projects", desc:"things that got built"},
+    {name:"contact", desc:"where to find me"}
+  ];
+
+  var COMMANDS = {
+    help: function(){
+      printLine("available commands:");
+      printLine("  help" + " ".repeat(14) + "show this list");
+      printLine("  whoami" + " ".repeat(12) + "who's behind the keyboard");
+      printLine("  ls" + " ".repeat(16) + "list page sections");
+      printLine("  cd &lt;section&gt;" + " ".repeat(6) + "show a section (about, projects, contact)");
+      printLine("  cat &lt;project&gt;" + " ".repeat(5) + "show a project's description");
+      printLine("  open &lt;project&gt;" + " ".repeat(4) + "open a project's repo in a new tab");
+      printLine("  cat contact.txt" + " ".repeat(3) + "contact info");
+      printLine("  clear" + " ".repeat(13) + "clear the screen");
+    },
+    whoami: function(){
+      printLine(
+        '<div class="neofetch">' +
+          '<img class="nf-logo" src="assets/pepe-logo.png" alt="tung1883">' +
+          '<div class="nf-info">' +
+            '<div class="nf-name">tung1883</div>' +
+            '<div><span class="nf-key">Stack</span>: Rust, Kotlin, TypeScript, reverse engineering</div>' +
+            '<div><span class="nf-key">Focus</span>: native desktop tools</div>' +
+            '<div><span class="nf-key">Also</span>: hardware I wasn\'t supposed to talk to</div>' +
+            '<div><span class="nf-key">Side quests</span>: a dozen, half-serious</div>' +
+            '<div class="nf-swatch">' +
+              '<span style="background:var(--bg);border:1px solid var(--border)"></span>' +
+              '<span style="background:var(--err)"></span>' +
+              '<span style="background:var(--ok)"></span>' +
+              '<span style="background:var(--warn)"></span>' +
+              '<span style="background:var(--accent)"></span>' +
+              '<span style="background:var(--fg)"></span>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    },
+    ls: function(){
+      SECTIONS.forEach(function(s){
+        printLine('<span style="color:var(--accent)">' + esc(s.name) + '/</span>  <span class="hint">' + esc(s.desc) + '</span>');
+      });
+      printLine('<span class="hint">cd &lt;section&gt; to show it</span>');
+    },
+    cd: function(arg){
+      if(!arg){ printLine("usage: cd &lt;section | home&gt;", "err"); return; }
+      var lower = arg.toLowerCase();
+      if(lower === "home"){
+        printLine("back");
+        showSection("home");
+        return;
+      }
+      var target = SECTIONS.find(function(s){ return s.name === lower; });
+      if(!target){ printLine("cd: " + esc(arg) + ": no such section", "err"); return; }
+      if(target.name === "about"){
+        COMMANDS.whoami();
+      } else if(target.name === "projects"){
+        var rowHtml = function(p){
+          return '<tr><td class="perm">' + (p.perm || "rwxr-xr-x") + '</td>' +
+            '<td class="name">' + esc(p.name) + '</td>' +
+            '<td class="stack">' + esc(p.stack) + '</td></tr>';
+        };
+        var mid = Math.ceil(PROJECTS.length / 2);
+        var colA = PROJECTS.slice(0, mid).map(rowHtml).join("");
+        var colB = PROJECTS.slice(mid).map(rowHtml).join("");
+        var thead = '<thead><tr><td class="perm">perm</td><td class="name">name</td><td class="stack">stack</td></tr></thead>';
+        printLine(
+          '<div class="term-table-cols">' +
+            '<table class="term-table">' + thead + '<tbody>' + colA + '</tbody></table>' +
+            '<table class="term-table">' + thead + '<tbody>' + colB + '</tbody></table>' +
+          '</div>'
+        );
+        printLine('<span class="hint">cat &lt;name&gt; for details, open &lt;name&gt; for the repo</span>');
+      } else if(target.name === "contact"){
+        COMMANDS.cat("contact.txt");
+      }
+      showSection(target.name);
+    },
+    clear: function(){
+      log.innerHTML = "";
+    },
+    cat: function(arg){
+      if(!arg){ printLine("usage: cat &lt;project | contact.txt&gt;", "err"); return; }
+      if(arg === "contact.txt"){
+        printLine('github:   <a href="https://github.com/tung1883" target="_blank" rel="noopener">github.com/tung1883</a>');
+        printLine('x.com:    <a href="https://x.com/tung1883" target="_blank" rel="noopener">x.com/tung1883</a>');
+        printLine('substack: <a href="https://tung1883.substack.com" target="_blank" rel="noopener">tung1883.substack.com</a>');
+        return;
+      }
+      var matches = findProject(arg);
+      if(matches.length === 0){ printLine("cat: " + esc(arg) + ": no such project", "err"); return; }
+      matches.forEach(function(p){
+        printLine('<span style="color:var(--fg);font-weight:600">' + esc(p.name) + '</span> <span style="color:var(--accent)">[' + esc(p.stack) + ']</span>');
+        printLine(esc(p.desc));
+        if(p.url){ printLine('<a href="' + p.url + '" target="_blank" rel="noopener">' + p.url + '</a>'); }
+      });
+    },
+    open: function(arg){
+      if(!arg){ printLine("usage: open &lt;project&gt;", "err"); return; }
+      var matches = findProject(arg);
+      if(matches.length === 0){ printLine("open: " + esc(arg) + ": no such project", "err"); return; }
+      var p = matches[0];
+      if(!p.url){ printLine(esc(p.name) + " is private — nothing to open.", "err"); return; }
+      printLine("opening " + esc(p.url) + " ...");
+      window.open(p.url, "_blank", "noopener");
+    }
+  };
+
+  function run(raw){
+    var cmd = raw.trim();
+    printCmd(cmd);
+    if(cmd === ""){ return; }
+    history.push(cmd);
+    histPos = history.length;
+    var parts = cmd.split(/\s+/);
+    var name = parts[0].toLowerCase();
+    var arg = parts.slice(1).join(" ");
+    if(COMMANDS[name]){
+      COMMANDS[name](arg);
+    } else {
+      printLine(esc(name) + ": command not found. try 'help'", "err");
+    }
+  }
+
+  input.addEventListener("input", function(){
+    typed.textContent = input.value;
+    body.scrollTop = body.scrollHeight;
+  });
+  input.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      run(input.value);
+      input.value = "";
+      typed.textContent = "";
+      body.scrollTop = body.scrollHeight;
+    } else if(e.key === "ArrowUp"){
+      e.preventDefault();
+      if(histPos > 0){ histPos--; input.value = history[histPos]; typed.textContent = input.value; }
+    } else if(e.key === "ArrowDown"){
+      e.preventDefault();
+      if(histPos < history.length - 1){ histPos++; input.value = history[histPos]; typed.textContent = input.value; }
+      else { histPos = history.length; input.value = ""; typed.textContent = ""; }
+    } else if(e.key === "Tab"){
+      e.preventDefault();
+      var parts = input.value.split(/\s+/);
+      var pool;
+      if(parts.length <= 1){
+        pool = Object.keys(COMMANDS);
+      } else {
+        var cmdName = parts[0];
+        if(cmdName === "cd"){ pool = SECTIONS.map(function(s){ return s.name; }); }
+        else if(cmdName === "open"){ pool = PROJECTS.map(function(p){ return p.name; }); }
+        else if(cmdName === "cat"){ pool = PROJECTS.map(function(p){ return p.name; }).concat(["contact.txt"]); }
+        else { pool = []; }
+      }
+      var prefix = parts[parts.length - 1];
+      var matches = pool.filter(function(c){ return c.indexOf(prefix) === 0; });
+      if(matches.length === 1){
+        parts[parts.length - 1] = matches[0];
+        input.value = parts.join(" ") + " ";
+      } else if(matches.length > 1){
+        printLine('<span class="hint">' + matches.join("  ") + '</span>');
+        body.scrollTop = body.scrollHeight;
+      }
+      typed.textContent = input.value;
+    }
+  });
+  window.addEventListener("keydown", function(e){
+    if(e.code === "Space" && document.activeElement !== input){
+      e.preventDefault();
+      input.focus({preventScroll:true});
+    }
+  });
+  body.addEventListener("click", function(){ input.focus({preventScroll:true}); });
+  input.focus({preventScroll:true});
+
+  document.querySelectorAll(".toc a").forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var target = a.getAttribute("href").slice(1);
+      run("cd " + target);
+      input.focus({preventScroll:true});
+      body.scrollTop = body.scrollHeight;
+    });
+  });
+  document.getElementById("back-link").addEventListener("click", function(e){
+    e.preventDefault();
+    run("cd home");
+    input.focus({preventScroll:true});
+    body.scrollTop = body.scrollHeight;
+  });
+  showSection("home");
+
+  var bootLines = [
+    "NixOS 24.05 (Uakari) — tung1883/home",
+    "",
+    "CPU: RE-1883 @ 4.40GHz ... OK",
+    "MEM: 65536K SYSTEM RAM ... OK",
+    "DISK: /dev/sda1 mounted at /home/tung1883 ... OK",
+    "",
+    "booting kernel ..................... done",
+    "activating nix configuration ....... done",
+    "loading shell: bash ................ done",
+    "mounting sections: about, projects, contact . done",
+    "",
+    "ACCESS GRANTED",
+    ""
+  ];
+  var bi = 0;
+  function bootLine(){
+    if(bi >= bootLines.length){
+      run("whoami");
+      printLine('<span class="hint">type \'help\' to look around</span>');
+      body.scrollTop = body.scrollHeight;
+      return;
+    }
+    printLine(esc(bootLines[bi]), "boot-line");
+    body.scrollTop = body.scrollHeight;
+    bi++;
+    setTimeout(bootLine, bootLines[bi - 1] === "" ? 50 : 70 + Math.random() * 70);
+  }
+  bootLine();
+})();
+</script>
+</body>
+</html>
