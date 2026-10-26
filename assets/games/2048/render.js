@@ -1,6 +1,6 @@
 // Vanilla-JS render layer around engine.js's pure game-logic functions
 // (the original is a React component; engine.js itself has no DOM code).
-import { newGame, move, spawnTile, isGameOver, WIN_VALUE } from "./engine.js";
+import { newGame, restoreTiles, move, spawnTile, isGameOver, WIN_VALUE } from "./engine.js";
 
 const GAP_PCT = 2.5;
 const CELL_PCT = (100 - 5 * GAP_PCT) / 4;
@@ -25,6 +25,18 @@ function tileClass(value) {
 
 const KEY_DIRS = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
 const BEST_KEY = "2048_best_score";
+const STATE_KEY = "2048_state";
+
+// A saved game: [[row, col, value], ...] plus score and win flags.
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STATE_KEY));
+    const ok = s && Array.isArray(s.tiles) && s.tiles.length && s.tiles.every(function (t) {
+      return Array.isArray(t) && t.length === 3 && t[0] >= 0 && t[0] < 4 && t[1] >= 0 && t[1] < 4 && t[2] > 0;
+    });
+    return ok ? s : null;
+  } catch (e) { return null; }
+}
 
 function loadBest() {
   try { return Number(localStorage.getItem(BEST_KEY)) || 0; } catch (e) { return 0; }
@@ -63,13 +75,26 @@ export function init2048(root) {
     grid.appendChild(cell);
   }
 
-  let tiles = newGame();
-  let score = 0;
+  const saved = loadState();
+  let tiles = saved ? restoreTiles(saved.tiles) : newGame();
+  let score = saved ? Number(saved.score) || 0 : 0;
   let best = loadBest();
-  let won = false, keepPlaying = false, gameOver = false;
+  let won = saved ? !!saved.won : false;
+  let keepPlaying = saved ? !!saved.keepPlaying : false;
+  let gameOver = false;
   let settleTimer = null, pendingSettle = null;
 
   bestEl.textContent = best;
+  scoreEl.textContent = score;
+
+  function saveState() {
+    try {
+      localStorage.setItem(STATE_KEY, JSON.stringify({
+        tiles: tiles.map(function (t) { return [t.row, t.col, t.value]; }),
+        score: score, won: won, keepPlaying: keepPlaying
+      }));
+    } catch (e) {}
+  }
 
   // One DOM node per tile id, kept across moves: updating its transform lets
   // the CSS transition slide it, and nothing is rebuilt per move.
@@ -120,7 +145,7 @@ export function init2048(root) {
     if (won_) {
       const keepBtn = document.createElement("button");
       keepBtn.textContent = "Keep going";
-      keepBtn.addEventListener("click", function () { keepPlaying = true; clearOverlay(); });
+      keepBtn.addEventListener("click", function () { keepPlaying = true; clearOverlay(); saveState(); });
       lower.appendChild(keepBtn);
     }
     const retryBtn = document.createElement("button");
@@ -141,6 +166,7 @@ export function init2048(root) {
     nodes.clear();
     tilesEl.innerHTML = "";
     paint(tiles);
+    saveState();
   }
 
   function handleMove(direction) {
@@ -169,6 +195,7 @@ export function init2048(root) {
       }
       tiles = withSpawn;
       paint(tiles);
+      saveState();
     }
 
     if (res.vanished.length === 0) { settle(); return; }
@@ -195,6 +222,10 @@ export function init2048(root) {
   root.querySelector("[data-restart]").addEventListener("click", restart);
 
   paint(tiles);
+  if (saved) {
+    if (isGameOver(tiles)) { gameOver = true; showMessage("Game over!", false); }
+    else if (won && !keepPlaying) { showMessage("You win!", true); }
+  }
 
   return {
     restart: restart,

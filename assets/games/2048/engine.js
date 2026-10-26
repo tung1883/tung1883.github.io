@@ -59,6 +59,12 @@ export function spawnTile(tiles) {
   return [...tiles, tile]
 }
 
+// Rebuilds a saved board ([row, col, value] triples) with fresh tile ids.
+export function restoreTiles(list) {
+  nextId = 1
+  return list.map(([row, col, value]) => makeTile(row, col, value))
+}
+
 export function newGame() {
   nextId = 1
   return spawnTile(spawnTile([]))

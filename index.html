@@ -1261,6 +1261,10 @@ try{
     if(msInstance){ msInstance.destroy(); msInstance = null; }
     import("./assets/games/minesweeper/engine.js").then(function(mod){
       msInstance = mod.initMinesweeper(msMount.querySelector(".ms-shell"), { onWin: msRecordTime });
+      // the saved difficulty may differ from the button marked active in the markup
+      msMount.querySelectorAll(".ms-diff-btn").forEach(function(x){
+        x.classList.toggle("active", x.getAttribute("data-diff") === msInstance.getDifficulty());
+      });
       activeGameCleanup = function(){ if(msInstance){ msInstance.destroy(); msInstance = null; } };
     }).catch(function(err){ console.error("minesweeper failed to load", err); });
   }
@@ -1334,6 +1338,7 @@ try{
         Module.FS.createPreloadedFile("", "doom1.wad", "assets/doom/doom1.wad", true, true);
       },
       onRuntimeInitialized: function(){
+        try{ restoreDoomSaves(Module.FS); }catch(e){ console.error("doom save restore failed", e); }
         callMain(["-iwad", "doom1.wad", "-window", "-nogui", "-nomusic"]);
       },
       print: function(t){ console.log(t); },
@@ -1379,6 +1384,71 @@ try{
     }));
   }
 
+  // ---- game saves (Pokémon battery save, Doom save files) in localStorage ----
+  function bytesToB64(u8){
+    var out = "";
+    for(var i = 0; i < u8.length; i += 0x8000){
+      out += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+    }
+    return btoa(out);
+  }
+  function b64ToBytes(b64){
+    var bin = atob(b64), u8 = new Uint8Array(bin.length);
+    for(var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    return u8;
+  }
+  function saveGet(key){
+    try{ return localStorage.getItem(key); }catch(e){ return null; }
+  }
+  function saveSet(key, value){
+    try{ localStorage.setItem(key, value); return true; }catch(e){ return false; }
+  }
+
+  var GBA_SAVE_KEY = "save_gba_firered";
+  var gbaEmu = null, gbaLastSave = saveGet(GBA_SAVE_KEY);
+  // The battery is the cartridge's save memory: it only changes when the game
+  // saves, so compare against the last stored copy and write on change.
+  function persistGba(){
+    if(!gbaEmu) return;
+    var data = gbaEmu.get_battery();
+    if(!data || !data.length) return;
+    if(!data.some(function(b){ return b !== 0xFF; })) return; // blank cartridge, nothing saved yet
+    var b64 = bytesToB64(data);
+    if(b64 === gbaLastSave) return;
+    if(saveSet(GBA_SAVE_KEY, b64)) gbaLastSave = b64;
+  }
+
+  var DOOM_SAVE_KEY = "save_doom";
+  var DOOM_SAVE_DIR = "/libsdl/doom-ws-wasm/savegames/doom.wad";
+  var doomLastSave = "";
+  function restoreDoomSaves(FS){
+    FS.createPath("/", DOOM_SAVE_DIR.slice(1), true, true);
+    var files = {};
+    try{ files = JSON.parse(saveGet(DOOM_SAVE_KEY)) || {}; }catch(e){}
+    Object.keys(files).forEach(function(name){
+      FS.writeFile(DOOM_SAVE_DIR + "/" + name, b64ToBytes(files[name]));
+    });
+    doomLastSave = JSON.stringify(files);
+  }
+  function persistDoom(){
+    var FS = window.Module && window.Module.FS;
+    if(!FS) return;
+    var files = {};
+    try{
+      FS.readdir(DOOM_SAVE_DIR).forEach(function(name){
+        if(/\.dsg$/i.test(name)) files[name] = bytesToB64(FS.readFile(DOOM_SAVE_DIR + "/" + name));
+      });
+    }catch(e){ return; }
+    var json = JSON.stringify(files);
+    if(json === doomLastSave) return;
+    if(saveSet(DOOM_SAVE_KEY, json)) doomLastSave = json;
+  }
+  setInterval(function(){ persistGba(); persistDoom(); }, 4000);
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden){ persistGba(); persistDoom(); }
+  });
+  window.addEventListener("pagehide", function(){ persistGba(); persistDoom(); });
+
   var gbaMount = document.getElementById("gba-mount");
   var gbaStarted = false;
   var GBA_KEYS = {
@@ -1397,6 +1467,10 @@ try{
           .then(function(r){ return r.arrayBuffer(); })
           .then(function(buf){
             emu.load_rom(new Uint8Array(buf));
+            if(gbaLastSave){
+              try{ emu.load_battery(b64ToBytes(gbaLastSave)); }catch(e){ console.error("gba save restore failed", e); }
+            }
+            gbaEmu = emu;
             document.addEventListener("keydown", function(e){
               if(document.activeElement.id !== "gba-canvas") return;
               var bit = GBA_KEYS[e.code];

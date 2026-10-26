@@ -9,9 +9,23 @@ const DIFFICULTIES = {
   expert:       { rows: 16, cols: 30, mines: 99 },
 }
 
+const SAVE_KEY = 'ms_state'
+
+// Saved as { difficulty, game }, where game is null unless a round is in
+// progress: flat 0/1 strings for mines, revealed and flagged cells (counts are
+// recomputed on load) plus the elapsed seconds.
+function loadSaved() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SAVE_KEY))
+    if (s && DIFFICULTIES[s.difficulty]) return s
+  } catch (e) {}
+  return null
+}
+
 export function initMinesweeper(root, { onWin } = {}) {
+  const saved = loadSaved()
   let state = {
-    difficulty: 'expert',
+    difficulty: saved ? saved.difficulty : 'expert',
     rows: 16, cols: 30, mines: 99,
     grid: [],
     gameOver: false,
@@ -246,6 +260,47 @@ export function initMinesweeper(root, { onWin } = {}) {
   function setDifficulty(d) {
     state.difficulty = d
     newGame()
+    save()
+  }
+
+  // ── Save / resume ────────────────────────────────────────────────────────
+
+  function save() {
+    try {
+      const inProgress = state.started && !state.gameOver && !state.won
+      const bits = (pick) => state.grid.map((c) => (pick(c) ? '1' : '0')).join('')
+      localStorage.setItem(SAVE_KEY, JSON.stringify({
+        difficulty: state.difficulty,
+        game: inProgress ? {
+          mines: bits((c) => c.mine), revealed: bits((c) => c.revealed),
+          flagged: bits((c) => c.flagged), seconds: state.seconds,
+        } : null,
+      }))
+    } catch (e) {}
+  }
+
+  function resume(game) {
+    const { rows, cols } = state
+    const n = rows * cols
+    if (!game || game.mines.length !== n || game.revealed.length !== n || game.flagged.length !== n) return false
+    state.grid = Array.from({ length: n }, (_, i) => ({
+      mine: game.mines[i] === '1', revealed: game.revealed[i] === '1', flagged: game.flagged[i] === '1',
+      exploded: false, wrongFlag: false, count: 0,
+    }))
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++)
+        if (!state.grid[idx(r, c)].mine)
+          state.grid[idx(r, c)].count = neighbors(r, c).filter(([nr, nc]) => state.grid[idx(nr, nc)].mine).length
+    state.started = true
+    state.seconds = Math.min(Number(game.seconds) || 0, 999)
+    setDigits('secs', state.seconds)
+    state.timerInterval = setInterval(() => {
+      state.seconds = Math.min(state.seconds + 1, 999)
+      setDigits('secs', state.seconds)
+    }, 1000)
+    updateMineCount()
+    paintAll()
+    return true
   }
 
   function startTimer() {
@@ -338,10 +393,12 @@ export function initMinesweeper(root, { onWin } = {}) {
     const t = targetCell(e)
     if (!t) return
     reveal(t.r, t.c)
+    save()
   }
 
   function onFaceClick() {
     newGame()
+    save()
   }
 
   function onContextMenu(e) {
@@ -354,6 +411,7 @@ export function initMinesweeper(root, { onWin } = {}) {
     cell.flagged = !cell.flagged
     updateMineCount()
     paintCell(t.r, t.c)
+    save()
   }
 
   function reveal(r, c) {
@@ -402,7 +460,7 @@ export function initMinesweeper(root, { onWin } = {}) {
   }
 
   function onKeyDown(e) {
-    if (e.key === 'F2') newGame()
+    if (e.key === 'F2') { newGame(); save() }
     if (e.key === '1')  setDifficulty('beginner')
     if (e.key === '2')  setDifficulty('intermediate')
     if (e.key === '3')  setDifficulty('expert')
@@ -417,11 +475,18 @@ export function initMinesweeper(root, { onWin } = {}) {
   document.addEventListener('keydown', onKeyDown)
 
   newGame()
+  if (saved && saved.game) resume(saved.game)
+  document.addEventListener('visibilitychange', save)
+  window.addEventListener('pagehide', save)
 
   return {
     newGame,
     setDifficulty,
+    getDifficulty: () => state.difficulty,
     destroy() {
+      save()
+      document.removeEventListener('visibilitychange', save)
+      window.removeEventListener('pagehide', save)
       clearInterval(state.timerInterval)
       game.removeEventListener('mousedown', onMouseDown)
       document.removeEventListener('mouseup', onMouseUp)
