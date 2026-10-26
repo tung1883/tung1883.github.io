@@ -1,0 +1,202 @@
+/* Classic Win95 Minesweeper look, rendered from sprite100.gif. Sprite
+   coordinates were measured from a reference build (16px cells / 100% zoom)
+   - everything else here (structure, state classes, layout) is our own. */
+
+body.ms-fullwidth .content-inner {
+  max-width: none;
+}
+
+.ms-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.ms-toolbar .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ms-page:fullscreen,
+.ms-page.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 16px;
+}
+
+.ms-shell {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+  width: fit-content;
+  margin: 0 auto;
+  transform-origin: top center;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  user-select: none;
+}
+
+.ms-game-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#game-container {
+  background: #c0c0c0;
+}
+
+.ms-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ms-header-row {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 2px 0;
+}
+
+.ms-header-group {
+  display: flex;
+  align-items: center;
+}
+
+/* ── Sprite base + positions ─────────────────────────────────────────── */
+
+.ms-sprite {
+  background-image: url('sprite100.gif');
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.time0 { background-position: 0 0;      width: 13px; height: 23px; }
+.time1 { background-position: -13px 0;  width: 13px; height: 23px; }
+.time2 { background-position: -26px 0;  width: 13px; height: 23px; }
+.time3 { background-position: -39px 0;  width: 13px; height: 23px; }
+.time4 { background-position: -52px 0;  width: 13px; height: 23px; }
+.time5 { background-position: -65px 0;  width: 13px; height: 23px; }
+.time6 { background-position: -78px 0;  width: 13px; height: 23px; }
+.time7 { background-position: -91px 0;  width: 13px; height: 23px; }
+.time8 { background-position: -104px 0; width: 13px; height: 23px; }
+.time9 { background-position: -117px 0; width: 13px; height: 23px; }
+.time- { background-position: -130px 0; width: 13px; height: 23px; }
+
+.open0 { background-position: 0 -23px;    width: 16px; height: 16px; }
+.open1 { background-position: -16px -23px; width: 16px; height: 16px; }
+.open2 { background-position: -32px -23px; width: 16px; height: 16px; }
+.open3 { background-position: -48px -23px; width: 16px; height: 16px; }
+.open4 { background-position: -64px -23px; width: 16px; height: 16px; }
+.open5 { background-position: -80px -23px; width: 16px; height: 16px; }
+.open6 { background-position: -96px -23px; width: 16px; height: 16px; }
+.open7 { background-position: -112px -23px; width: 16px; height: 16px; }
+.open8 { background-position: -128px -23px; width: 16px; height: 16px; }
+
+.blank           { background-position: 0 -39px;    width: 16px; height: 16px; cursor: pointer; }
+.bombflagged     { background-position: -16px -39px; width: 16px; height: 16px; cursor: pointer; }
+.bombdeath       { background-position: -32px -39px; width: 16px; height: 16px; }
+.bombmisflagged  { background-position: -48px -39px; width: 16px; height: 16px; }
+.bombrevealed    { background-position: -64px -39px; width: 16px; height: 16px; }
+
+.facesmile   { background-position: 0 -55px;    width: 26px; height: 26px; cursor: pointer; }
+.facepressed { background-position: -26px -55px; width: 26px; height: 26px; cursor: pointer; }
+.faceooh     { background-position: -52px -55px; width: 26px; height: 26px; cursor: pointer; }
+.facedead    { background-position: -78px -55px; width: 26px; height: 26px; cursor: pointer; }
+.facewin     { background-position: -104px -55px; width: 26px; height: 26px; cursor: pointer; }
+
+.bordertl       { background-position: 0 -81px;   width: 10px; height: 10px; }
+.bordertr       { background-position: -10px -81px; width: 10px; height: 10px; }
+.borderbl       { background-position: -20px -81px; width: 10px; height: 10px; }
+.borderbr       { background-position: -30px -81px; width: 10px; height: 10px; }
+.bordertb       { background-position: -40px -81px; width: 16px; height: 10px; }
+.borderjointl   { background-position: -56px -81px; width: 10px; height: 10px; }
+.borderjointr   { background-position: -66px -81px; width: 10px; height: 10px; }
+.borderlr       { background-position: -134px -39px; width: 10px; height: 16px; }
+.borderlrlong   { background-position: -134px -39px; width: 10px; height: 32px; }
+
+/* ── Diff buttons + best-times panel (our own chrome, not sprite-based) ── */
+
+.ms-shell .diff-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.ms-shell .diff-btn {
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-size: 11px;
+  padding: 3px 9px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  cursor: pointer;
+  color: #000;
+  outline: none;
+}
+
+.ms-shell .diff-btn.active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 4px 8px 2px 10px;
+}
+
+.ms-shell .diff-btn:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 4px 8px 2px 10px;
+}
+
+.ms-shell .lb-panel {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  padding: 6px 8px;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-size: 11px;
+  color: #000;
+}
+
+.ms-shell .lb-title {
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #808080;
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+
+.ms-shell .lb-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.ms-shell .lb-label { color: #444; }
+
+.ms-shell .lb-val {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #000080;
+  min-width: 34px;
+  text-align: right;
+}
