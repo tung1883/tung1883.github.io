@@ -476,6 +476,32 @@ try{
   }
 }catch(e){}
 </script>
+<script>
+// Logos shown by `whoami`: preloaded now so they are cached by the time the boot
+// sequence finishes and the neofetch block renders.
+var TECH_LOGOS = [
+  ["https://cdn.simpleicons.org/rust/F74C00", "Rust"],
+  ["https://cdn.simpleicons.org/kotlin/7F52FF", "Kotlin"],
+  ["https://cdn.simpleicons.org/typescript/3178C6", "TypeScript"],
+  ["https://cdn.simpleicons.org/python/3776AB", "Python"],
+  ["https://cdn.simpleicons.org/react/61DAFB", "React Native"],
+  ["https://cdn.simpleicons.org/nodedotjs/5FA04E", "Node"],
+  ["https://cdn.simpleicons.org/c/A8B9CC", "C"],
+  ["https://cdn.simpleicons.org/zig/F7A41D", "Zig"],
+  ["https://cdn.simpleicons.org/jenkins/D33833", "Jenkins"],
+  ["https://cdn.simpleicons.org/postgresql/4169E1", "Postgres"],
+  ["https://cdn.simpleicons.org/neovim/57A143", "Neovim"],
+  ["https://cdn.simpleicons.org/nixos/5277C3", "NixOS"],
+  ["https://cdn.simpleicons.org/tmux/1BB91F", "tmux"]
+];
+["assets/pepe-logo.png"].concat(TECH_LOGOS.map(function(l){ return l[0]; })).forEach(function(href){
+  var l = document.createElement("link");
+  l.rel = "preload";
+  l.as = "image";
+  l.href = href;
+  document.head.appendChild(l);
+});
+</script>
 </head>
 <body>
 
@@ -883,19 +909,7 @@ try{
             '<div><span class="nf-key">Also</span>: hardware I wasn\'t supposed to talk to</div>' +
             '<div><span class="nf-key">Side quests</span>: a dozen, half-serious</div>' +
             '<div class="nf-tech">' +
-              '<span><img src="https://cdn.simpleicons.org/rust/F74C00" alt="Rust"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/kotlin/7F52FF" alt="Kotlin"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/typescript/3178C6" alt="TypeScript"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/react/61DAFB" alt="React Native"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/nodedotjs/5FA04E" alt="Node"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/c/A8B9CC" alt="C"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/zig/F7A41D" alt="Zig"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/jenkins/D33833" alt="Jenkins"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/postgresql/4169E1" alt="Postgres"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/neovim/57A143" alt="Neovim"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/nixos/5277C3" alt="NixOS"></span>' +
-              '<span><img src="https://cdn.simpleicons.org/tmux/1BB91F" alt="tmux"></span>' +
+              TECH_LOGOS.map(function(l){ return '<span><img src="' + l[0] + '" alt="' + l[1] + '"></span>'; }).join("") +
             '</div>' +
           '</div>' +
         '</div>'

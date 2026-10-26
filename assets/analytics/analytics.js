@@ -107,7 +107,6 @@
     var hit = cache[range];
     if (hit && Date.now() - hit.t < CACHE_MS) { state.data = hit.d; draw(); return; }
     state.loading = true;
-    state.data = null;
     draw();
     load(range).then(function (d) {
       if (state.range !== range) return;
@@ -147,27 +146,32 @@
     }).join("") + "</div>";
   }
 
+  // The table keeps the same structure in every state (loading, error, any
+  // range), so switching ranges never changes its height: old numbers stay
+  // dimmed while the new ones load, missing values show "-", and the games
+  // list is always three rows.
   function tableHtml() {
-    var d = state.data, body;
-    if (state.loading || !d) {
-      body = '<div class="an-msg">loading ...</div>';
-    } else if (d.error) {
-      body = '<div class="an-msg">stats unavailable (is "Allow adding visitor counts" on?)</div>';
-    } else {
-      var top = d.games.filter(function (g) { return g[1] > 0; }).slice(0, 3), mx = top.length ? top[0][1] : 1;
-      var kpi = function (l, v, x) { return '<div class="an-kpi"><small>' + l + "</small><b>" + v + "</b>" + (x || "") + "</div>"; };
-      body = '<div class="an-kpis">' + kpi("views", fmt(d.views), delta(d.views, d.prev)) + kpi("games", fmt(d.gamesTotal)) +
-        kpi("top game", top.length ? esc(top[0][0]) : "-") + "</div>" +
-        '<div class="an-sp">' + spark(d.spark, 262, 28) + "</div>" +
-        '<table><tr><th>games opened</th><th></th><th class="n">count</th></tr>' +
-        (top.length ? top.map(function (g) {
-          return "<tr><td>" + esc(g[0]) + '</td><td class="bc"><div class="an-bar"><i style="width:' + g[1] / mx * 100 + '%"></i></div></td><td class="n">' + fmt(g[1]) + "</td></tr>";
-        }).join("") : '<tr><td colspan="3" class="an-dim">none yet</td></tr>') + "</table>";
+    var d = state.data && !state.data.error ? state.data : null;
+    var kpi = function (label, val, extra) {
+      return '<div class="an-kpi"><small>' + label + '</small><div class="an-v"><b>' + val + "</b>" + (extra || "") + "</div></div>";
+    };
+    var top = d ? d.games.filter(function (g) { return g[1] > 0; }).slice(0, 3) : [];
+    var mx = top.length ? top[0][1] : 1;
+    var rows = "";
+    for (var i = 0; i < 3; i++) {
+      var g = top[i];
+      rows += "<tr><td>" + (g ? esc(g[0]) : "-") + '</td><td class="bc"><div class="an-bar">' +
+        (g ? '<i style="width:' + g[1] / mx * 100 + '%"></i>' : "") + '</div></td><td class="n">' + (g ? fmt(g[1]) : "-") + "</td></tr>";
     }
-    return '<div class="an-tbl"><div class="an-h"><span><span class="an-live"></span>analytics</span><span class="an-r">' + rangeBar() +
+    var note = state.data && state.data.error ? 'unavailable: is "visitor counts" on?' : "via goatcounter";
+    return '<div class="an-tbl' + (state.loading ? " an-loading" : "") + '"><div class="an-h"><span><span class="an-live"></span>analytics</span><span class="an-r">' + rangeBar() +
       '<button type="button" class="an-tg" data-an-mode="chip" title="Collapse to chip" aria-label="Collapse to chip">' + ICON_MIN + "</button></span></div>" +
-      '<div class="an-b"><div class="an-cmd"><span>$</span> stats --range ' + state.range + "</div>" + body +
-      '<div class="an-foot"><span>via goatcounter</span></div></div></div>';
+      '<div class="an-b"><div class="an-cmd"><span>$</span> stats --range ' + state.range + "</div>" +
+      '<div class="an-kpis">' + kpi("views", d ? fmt(d.views) : "-", d ? delta(d.views, d.prev) : "") + kpi("games", d ? fmt(d.gamesTotal) : "-") +
+      kpi("top game", top.length ? esc(top[0][0]) : "-") + "</div>" +
+      '<div class="an-sp">' + spark(d ? d.spark : [0, 0, 0, 0, 0, 0, 0], 262, 28) + "</div>" +
+      '<table><tr><th>games opened</th><th></th><th class="n">count</th></tr>' + rows + "</table>" +
+      '<div class="an-foot"><span>' + note + "</span></div></div></div>";
   }
 
   function chipHtml() {
