@@ -231,7 +231,17 @@ function __wbg_get_imports() {
             return addHeapObject(ret);
         },
         __wbg_new_with_u8_clamped_array_and_sh_af3f0dee40638e18: function() { return handleError(function (arg0, arg1, arg2, arg3) {
-            const ret = new ImageData(getClampedArrayU8FromWasm0(arg0, arg1), arg2 >>> 0, arg3 >>> 0);
+            // The core hands over BGRA but canvas wants RGBA, which made everything
+            // blue; swap red and blue on a copy (the wasm buffer stays untouched).
+            const src = getClampedArrayU8FromWasm0(arg0, arg1);
+            const px = new Uint8ClampedArray(src.length);
+            for (let i = 0; i < src.length; i += 4) {
+                px[i] = src[i + 2];
+                px[i + 1] = src[i + 1];
+                px[i + 2] = src[i];
+                px[i + 3] = src[i + 3];
+            }
+            const ret = new ImageData(px, arg2 >>> 0, arg3 >>> 0);
             return addHeapObject(ret);
         }, arguments); },
         __wbg_putImageData_11570c06086c9e05: function() { return handleError(function (arg0, arg1, arg2, arg3) {
