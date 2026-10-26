@@ -14,14 +14,17 @@
   ];
   var CACHE_KEY = "analytics_cache_v1";
   var MODE_KEY = "analytics_mode";
-  var CACHE_MS = 15 * 60 * 1000;
+  var CACHE_MS = 2 * 60 * 1000;
 
   // Called by the page: window.analyticsTrack("game-doom", "Doom", true).
   // No-op until GoatCounter's script has loaded (and always on localhost).
   window.analyticsTrack = function (path, title, isEvent) {
     if (!CODE || !window.goatcounter || !window.goatcounter.count) return;
     window.goatcounter.count({ path: path, title: title, event: !!isEvent });
+    // show our own hit soon: drop the cached numbers and refetch once GoatCounter has stored it
+    if (isEvent && refreshSoon) refreshSoon();
   };
+  var refreshSoon = null;
 
   if (!CODE) return;
 
@@ -196,5 +199,13 @@
     }
   });
   window.addEventListener("resize", draw);
+  var refreshTimer = null;
+  refreshSoon = function () {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(function () {
+      try { localStorage.removeItem(CACHE_KEY); } catch (e) {}
+      ensure(state.range);
+    }, 5000);
+  };
   ensure(state.range);
 })();
