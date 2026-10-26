@@ -53,9 +53,13 @@
   }
   function daysAgo(n) { var d = new Date(); d.setDate(d.getDate() - n); return d; }
 
+  // start and end are both inclusive days here; the counter's end date is
+  // exclusive, so ask for the day after (end=today would miss today's hits).
   function count(path, start, end) {
+    var stop = new Date(end);
+    stop.setDate(stop.getDate() + 1);
     var url = "https://" + CODE + ".goatcounter.com/counter/" + encodeURIComponent(path) + ".json" +
-      "?start=" + ymd(start) + "&end=" + ymd(end);
+      "?start=" + ymd(start) + "&end=" + ymd(stop);
     return fetch(url).then(function (r) {
       if (r.status === 404) return 0; // never counted yet
       if (!r.ok) throw new Error("counter " + r.status);
