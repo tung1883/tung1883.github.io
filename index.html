@@ -685,6 +685,7 @@ try{
 </nav>
 </div>
 
+<script src="assets/analytics/analytics.js"></script>
 <script>
 (function(){
 
@@ -759,6 +760,10 @@ try{
   // Working directory, as path segments under ~ ([] is home). The "files" are
   // the page sections plus the chill-corner tree; see dirEntries().
   var cwd = [];
+  // analytics (assets/analytics/analytics.js); does nothing until it is configured
+  function track(path, title, isEvent){
+    if(window.analyticsTrack) window.analyticsTrack(path, title, isEvent);
+  }
   function cwdLabel(segs){ return segs.length ? "~/" + segs.join("/") : "~"; }
   function promptPath(){ return "home" + (cwd.length ? ":" + cwdLabel(cwd) : ""); }
   function updatePrompt(){
@@ -821,6 +826,7 @@ try{
     });
     document.getElementById("toc-home").classList.toggle("active", showAll);
     document.getElementById("back-link").classList.toggle("visible", !showAll);
+    if(!showAll) track("/" + name, name, false);
     // nav clicks move the shell too, unless it is already somewhere inside
     if(showAll){ cwd = []; } else if(cwd[0] !== name){ cwd = [name]; }
     updatePrompt();
@@ -1448,6 +1454,7 @@ try{
     printLine('<span class="hint">starting ' + esc(g[0]) + ' ...</span>');
     GAME_OPEN[key]();
     currentGame = key;
+    track("game-" + key, g[1], true);
     shellOut("[" + g[1] + "] window opened", "ok");
   }
   document.querySelectorAll(".chill-launch[data-game]").forEach(function(btn){
