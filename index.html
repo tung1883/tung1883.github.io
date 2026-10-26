@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" href="assets/pepe-logo.png">
-<title>tung1883 ~ portfolio</title>
+<title>tung1883/home</title>
 <style>
 :root{
   --bg:#111;
@@ -159,8 +159,13 @@ a:hover{border-bottom-color:var(--accent);}
 .neofetch .nf-info div{margin:0 0 2px;}
 .nf-key{color:var(--ok);font-weight:600;}
 .nf-name{color:var(--fg);font-weight:700;font-size:16px;margin-bottom:6px !important;}
-.nf-swatch{display:flex;gap:5px;margin-top:10px;}
-.nf-swatch span{width:16px;height:16px;border-radius:3px;display:inline-block;}
+.nf-tech{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.nf-tech span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.nf-tech img{width:22px;height:22px;}
 
 .prompt{color:var(--dim2);}
 .prompt .user{color:var(--ok);}
@@ -244,6 +249,165 @@ h2{
 .about p:last-child{margin:0;}
 .about{padding:20px 24px;}
 
+.chill{padding:20px 24px;display:flex;gap:48px;flex-wrap:wrap;}
+.chill-group h3{
+  color:var(--dim);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin:0 0 10px;
+  font-weight:600;
+}
+.chill-group ul{list-style:none;margin:0;padding:0;}
+.chill-group ol.chill-num{list-style:none;margin:0;padding:0;counter-reset:n;}
+.chill-group ol.chill-num li{counter-increment:n;}
+.chill-group ol.chill-num li::before{content:counter(n) ".";color:var(--accent);display:inline-block;min-width:2ch;margin-right:1ch;}
+.chill-group li{color:var(--fg);padding:3px 0;}
+.chill-group li::before{content:"› ";color:var(--accent);}
+.chill-group button.chill-launch,
+.chill-group button#music-stop{
+  background:none;
+  border:none;
+  color:var(--fg);
+  font-family:inherit;
+  font-size:inherit;
+  cursor:pointer;
+  padding:0;
+  border-bottom:1px solid transparent;
+}
+.chill-group button.chill-launch:hover,
+.chill-group button#music-stop:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.chill-disabled{color:var(--dim2);cursor:help;}
+.mp-list{list-style:none;margin:0;padding:0;}
+.mp-list li{padding:3px 0;color:var(--dim);cursor:pointer;}
+.mp-list li::before{content:none;}
+.mp-list li:hover,.mp-list li.on{color:var(--fg);}
+.mp-list li.on{font-weight:700;}
+.mp-list .mp-n{color:var(--accent);display:inline-block;min-width:2ch;}
+.mp-list li.mp-empty{cursor:default;color:var(--dim2);}
+.mp-term{margin-top:14px;border:1px dashed var(--border);border-radius:6px;padding:10px 12px;font-size:12px;width:340px;max-width:100%;}
+.mp-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.mp-np{color:var(--dim);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mp-np b{color:var(--fg);}
+.mp-bar{display:flex;align-items:center;gap:6px;margin:6px 0;white-space:pre;}
+.mp-track{flex:1;min-width:0;position:relative;height:1.4em;overflow:hidden;cursor:pointer;color:var(--dim2);}
+/* both runs are absolute so their 400 chars never size the track */
+.mp-back,.mp-fill{position:absolute;left:0;top:0;bottom:0;white-space:nowrap;overflow:hidden;line-height:1.4em;}
+.mp-back{right:0;}
+.mp-fill{width:0;color:var(--accent);}
+.mp-tm{color:var(--dim);flex:none;}
+.mp-cmds{display:flex;gap:14px;flex-wrap:wrap;}
+.mp-cmds button{background:none;border:0;border-bottom:1px dashed transparent;color:var(--dim);font:inherit;cursor:pointer;padding:0;}
+.mp-cmds button:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.mp-cmds button.on{color:var(--accent);}
+.mp-cmds{align-items:center;}
+.mp-vol{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.mp-mute{display:flex;background:none;border:0;padding:0;color:var(--dim);cursor:pointer;}
+.mp-mute:hover{color:var(--accent);}
+.mp-vol input{-webkit-appearance:none;appearance:none;width:70px;height:4px;border-radius:2px;outline:none;cursor:pointer;
+  background:linear-gradient(to right,var(--accent) var(--v,70%),var(--border) var(--v,70%));}
+.mp-vol input::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:var(--fg);border:0;}
+.mp-vol input::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:var(--fg);border:0;}
+#game-panel{margin-top:20px;}
+#game-panel .titlebar{justify-content:space-between;}
+#game-panel .name{margin:0;font-weight:600;color:var(--fg);}
+#game-panel-close{
+  background:none;
+  border:none;
+  color:var(--dim);
+  font-size:16px;
+  cursor:pointer;
+  line-height:1;
+}
+#game-panel-close:hover{color:var(--err);}
+#game-panel-body{padding:20px 24px;display:flex;justify-content:center;}
+#game-panel-fullscreen{
+  background:none;
+  border:none;
+  color:var(--dim);
+  font-size:14px;
+  cursor:pointer;
+  line-height:1;
+  margin-left:auto;
+  margin-right:10px;
+}
+#game-panel-fullscreen:hover{color:var(--accent);}
+#game-panel:fullscreen,
+#game-panel.gp-fullscreen{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  margin:0;
+  width:100%;
+  height:100%;
+  /* !important: openX() sets an inline display:block on the panel */
+  display:flex !important;
+  flex-direction:column;
+  background:var(--bg);
+}
+#game-panel:fullscreen #game-panel-fullscreen,
+#game-panel.gp-fullscreen #game-panel-fullscreen,
+#game-panel:fullscreen .titlebar .name,
+#game-panel.gp-fullscreen .titlebar .name{display:none;}
+#game-panel:fullscreen #game-panel-close,
+#game-panel.gp-fullscreen #game-panel-close{margin-left:auto;}
+#game-panel:fullscreen #game-panel-body,
+#game-panel.gp-fullscreen #game-panel-body{
+  flex:1;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+#game-panel.gp-fullscreen #ms-mount,
+#game-panel.gp-fullscreen #g2048-mount{width:fit-content;}
+#game-panel.gp-fullscreen #g2048-mount .g2048-container{width:540px;}
+#game-panel:fullscreen .fb-canvas,
+#game-panel.gp-fullscreen .fb-canvas{
+  width:auto;
+  max-width:none;
+  height:calc(100vh - 150px);
+  aspect-ratio:288/512;
+}
+#game-panel:fullscreen #canvas,
+#game-panel.gp-fullscreen #canvas,
+#game-panel:fullscreen #gba-canvas,
+#game-panel.gp-fullscreen #gba-canvas{
+  width:auto !important;
+  max-width:none !important;
+  height:calc(100vh - 110px);
+}
+
+.ms-toptools{display:flex;gap:8px;margin-bottom:10px;justify-content:center;}
+.ms-toptools button{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--dim);
+  padding:4px 10px;
+  border-radius:4px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:11px;
+}
+.ms-toptools button:hover,
+.ms-toptools button.active{color:var(--accent);border-color:var(--accent);}
+
+.fb-canvas{
+  width:100%;
+  max-width:288px;
+  aspect-ratio:288/512;
+  display:block;
+  margin:0 auto;
+  background:#4ec0ca;
+  cursor:pointer;
+  touch-action:none;
+  user-select:none;
+  image-rendering:pixelated;
+  border:1px solid var(--border);
+  border-radius:4px;
+}
+
 table.ls{width:100%;border-collapse:collapse;}
 table.ls td{
   vertical-align:top;
@@ -322,7 +486,8 @@ try{
   <a href="#home" class="root" id="toc-home">home/</a>
   <a href="#about" class="leaf"><span class="branch">├── </span>about</a>
   <a href="#projects" class="leaf"><span class="branch">├── </span>projects</a>
-  <a href="#contact" class="leaf"><span class="branch">└── </span>contact</a>
+  <a href="#contact" class="leaf"><span class="branch">├── </span>contact</a>
+  <a href="#chill-corner" class="leaf"><span class="branch">└── </span>chill-corner</a>
 </nav>
 <main class="content">
 
@@ -335,7 +500,7 @@ try{
   <div id="term-body">
     <div id="term-log"></div>
     <div id="term-line">
-      <span class="prompt"><span class="user">tung1883</span>@<span class="path">home</span> $</span>&nbsp;<span class="typed" id="term-typed"></span><span class="cursor"></span>
+      <span class="prompt"><span class="user">tung1883</span>@<span class="path" id="prompt-path">home</span> $</span>&nbsp;<span class="typed" id="term-typed"></span><span class="cursor"></span>
     </div>
     <input id="term-input" autocomplete="off" autocapitalize="off" spellcheck="false">
   </div>
@@ -452,6 +617,65 @@ try{
   </div>
 </section>
 
+<section id="chill-corner" class="page-section">
+  <h2>chill-corner</h2>
+  <div class="window chill">
+    <div class="chill-group">
+      <h3>games</h3>
+      <ol class="chill-num">
+        <li><button type="button" class="chill-launch" data-game="minesweeper">Minesweeper</button></li>
+        <li><button type="button" class="chill-launch" data-game="sudoku">Sudoku</button></li>
+        <li><button type="button" class="chill-launch" data-game="2048">2048</button></li>
+        <li><button type="button" class="chill-launch" data-game="flappybird">Flappy Bird</button></li>
+        <li><button type="button" class="chill-launch" data-game="doom">Doom</button></li>
+        <li><button type="button" class="chill-launch" data-game="pokemon">Pokémon FireRed</button></li>
+      </ol>
+    </div>
+    <div class="chill-group">
+      <h3>music</h3>
+      <div id="music-mount"></div>
+    </div>
+    <div class="chill-group">
+      <h3>player</h3>
+      <div id="player-mount"></div>
+    </div>
+  </div>
+  <div class="window" id="game-panel" style="display:none">
+    <div class="titlebar">
+      <span class="name" id="game-panel-title"></span>
+      <button type="button" id="game-panel-fullscreen" title="fullscreen">&#9974;</button>
+      <button type="button" id="game-panel-close">&times;</button>
+    </div>
+    <div id="game-panel-body"></div>
+  </div>
+  <div id="doom-mount" style="display:none">
+    <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()" width="640" height="400" style="width:100%;max-width:640px;display:block;margin:0 auto;background:#000;image-rendering:pixelated;"></canvas>
+    <p class="hint" style="text-align:center;margin-top:8px;">click to focus, arrows move, ctrl fires, space uses — DOOM shareware via <a href="https://github.com/cloudflare/doom-wasm" target="_blank" rel="noopener">cloudflare/doom-wasm</a></p>
+  </div>
+  <div id="gba-mount" style="display:none">
+    <canvas id="gba-canvas" tabindex="-1" oncontextmenu="event.preventDefault()" width="240" height="160" style="width:100%;max-width:480px;display:block;margin:0 auto;background:#000;image-rendering:pixelated;"></canvas>
+    <p class="hint" style="text-align:center;margin-top:8px;">click to focus, arrows move, X = A, Z = B, Enter = start, Backspace = select, A/S = L/R</p>
+  </div>
+  <div id="ms-mount" style="display:none">
+    <div class="ms-toptools">
+      <button type="button" class="ms-diff-btn" data-diff="beginner">beginner</button>
+      <button type="button" class="ms-diff-btn" data-diff="intermediate">intermediate</button>
+      <button type="button" class="ms-diff-btn active" data-diff="expert">expert</button>
+    </div>
+    <div class="ms-shell">
+      <div class="ms-game-col">
+        <div id="game-container"><div id="game"></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="g2048-mount" style="display:none"></div>
+  <div id="fb-mount" style="display:none">
+    <canvas id="fb-canvas" class="fb-canvas" width="288" height="512"></canvas>
+    <p class="hint" style="text-align:center;margin-top:8px;">click / tap / space to flap — gear icon for character + sound</p>
+  </div>
+  <div id="sk-mount" style="display:none"></div>
+</section>
+
 </main>
 <nav class="social">
   <span class="root">links/</span>
@@ -517,19 +741,76 @@ try{
   function esc(s){
     return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
+  var lastFailed = false; // set by any error line, read by && chains
   function printLine(html, cls){
+    if(cls === "err") lastFailed = true;
     var p = document.createElement("div");
     p.className = "line" + (cls ? " " + cls : "");
     p.innerHTML = html;
     log.appendChild(p);
   }
   function printCmd(cmd){
-    printLine('<span class="prompt"><span class="user">tung1883</span>@<span class="path">home</span> $</span>&nbsp;' + esc(cmd));
+    printLine('<span class="prompt"><span class="user">tung1883</span>@<span class="path">' + promptPath() + '</span> $</span>&nbsp;' + esc(cmd));
   }
   function findProject(name){
     name = (name || "").toLowerCase();
     return PROJECTS.filter(function(p){ return p.name.toLowerCase().indexOf(name) !== -1; });
   }
+  // Working directory, as path segments under ~ ([] is home). The "files" are
+  // the page sections plus the chill-corner tree; see dirEntries().
+  var cwd = [];
+  function cwdLabel(segs){ return segs.length ? "~/" + segs.join("/") : "~"; }
+  function promptPath(){ return "home" + (cwd.length ? ":" + cwdLabel(cwd) : ""); }
+  function updatePrompt(){
+    var el = document.getElementById("prompt-path");
+    if(el) el.textContent = promptPath();
+  }
+  // Returns the segments an argument points at (relative to cwd), or null.
+  function resolvePath(arg){
+    var segs = /^(~|\/)/.test(arg) ? [] : cwd.slice();
+    arg.replace(/^~/, "").split("/").forEach(function(part){
+      part = part.toLowerCase();
+      if(!part || part === ".") return;
+      if(part === ".."){ segs.pop(); } else { segs.push(part); }
+    });
+    return segs;
+  }
+  function isDir(segs){
+    if(segs.length === 0) return true;
+    if(segs.length === 1) return SECTIONS.some(function(sec){ return sec.name === segs[0]; });
+    return segs.length === 2 && segs[0] === "chill-corner" && (segs[1] === "games" || segs[1] === "music");
+  }
+  // Files directly inside a directory: [name, kind] with kind dir|exe|file.
+  function dirEntries(segs){
+    var key = segs.join("/");
+    if(key === "") return SECTIONS.map(function(sec){ return [sec.name, "dir"]; });
+    if(key === "chill-corner") return [["games", "dir"], ["music", "dir"], ["vlc", "exe"]];
+    if(key === "chill-corner/games") return ccGames().map(function(k){ return [GAME_EXES[k][0], "exe"]; });
+    if(key === "chill-corner/music") return (vlcApi ? vlcApi.files() : []).map(function(f){ return [f, "file"]; });
+    return [];
+  }
+  function fileKind(segs){
+    if(segs.length < 2) return null;
+    var hit = dirEntries(segs.slice(0, -1)).filter(function(e){ return e[0] === segs[segs.length - 1]; })[0];
+    return hit ? hit[1] : null;
+  }
+  function listDir(segs){
+    if(segs.length === 0){
+      var width = Math.max.apply(null, SECTIONS.map(function(sec){ return sec.name.length; })) + 1;
+      SECTIONS.forEach(function(sec){
+        var label = sec.name + "/";
+        // pad with nbsp so the descriptions line up in a column
+        printLine('<span style="color:var(--accent)">' + esc(label) + '</span>' + "&nbsp;".repeat(width - sec.name.length + 1) + '<span class="hint">' + esc(sec.desc) + '</span>');
+      });
+      printLine('<span class="hint">cd &lt;section&gt; to enter it</span>');
+      return;
+    }
+    var colors = {dir: "accent", exe: "ok", file: "fg"};
+    printLine(dirEntries(segs).map(function(e){
+      return '<span style="color:var(--' + colors[e[1]] + ')">' + esc(e[0]) + (e[1] === "dir" ? "/" : "") + '</span>';
+    }).join("&nbsp;&nbsp;&nbsp;"));
+  }
+
   function showSection(name){
     var showAll = (name === "home");
     document.querySelectorAll(".page-section").forEach(function(el){
@@ -540,13 +821,33 @@ try{
     });
     document.getElementById("toc-home").classList.toggle("active", showAll);
     document.getElementById("back-link").classList.toggle("visible", !showAll);
+    // nav clicks move the shell too, unless it is already somewhere inside
+    if(showAll){ cwd = []; } else if(cwd[0] !== name){ cwd = [name]; }
+    updatePrompt();
   }
 
   var SECTIONS = [
-    {name:"about", desc:"who's behind the keyboard"},
+    {name:"about", desc:"about me"},
+    {name:"contact", desc:"where to find me"},
     {name:"projects", desc:"things that got built"},
-    {name:"contact", desc:"where to find me"}
+    {name:"chill-corner", desc:"games & music"}
   ];
+
+  // A UI action (click in chill-corner, game panel buttons) shows up in the
+  // shell as the command it stands for.
+  function shellEcho(cmd){
+    printCmd(cmd);
+    history.push(cmd);
+    histPos = history.length;
+    body.scrollTop = body.scrollHeight;
+  }
+  function shellOut(text, cls){
+    printLine(esc(text), cls === "ok" ? "ok" : (cls === "err" ? "err" : "hint"));
+    body.scrollTop = body.scrollHeight;
+  }
+  var vlcApi = null;
+  // same order as the games list (an object would put "2048" first); GAME_EXES is defined further down
+  function ccGames(){ return ["minesweeper", "sudoku", "2048", "flappybird", "doom", "pokemon"]; }
 
   var COMMANDS = {
     help: function(){
@@ -554,11 +855,16 @@ try{
       printLine("  help" + " ".repeat(14) + "show this list");
       printLine("  whoami" + " ".repeat(12) + "who's behind the keyboard");
       printLine("  ls" + " ".repeat(16) + "list page sections");
-      printLine("  cd &lt;section&gt;" + " ".repeat(6) + "show a section (about, projects, contact)");
+      printLine("  cd &lt;dir&gt;" + " ".repeat(10) + "enter a directory (about, projects, contact, chill-corner/games, ..)");
       printLine("  cat &lt;project&gt;" + " ".repeat(5) + "show a project's description");
       printLine("  open &lt;project&gt;" + " ".repeat(4) + "open a project's repo in a new tab");
       printLine("  cat contact.txt" + " ".repeat(3) + "contact info");
+      printLine("  ls [path]" + " ".repeat(9) + "list files in the current directory (or a path)");
+      printLine("  ./&lt;game&gt;" + " ".repeat(10) + "run a game, e.g. ~/chill-corner/games/doom");
+      printLine("  vlc [track|cmd]" + " ".repeat(3) + "music player: vlc 1, vlc pause, vlc next, vlc volume 40");
       printLine("  clear" + " ".repeat(13) + "clear the screen");
+      printLine("  grep &lt;term&gt;" + " ".repeat(7) + "search projects, or filter piped output");
+      printLine("  &lt;cmd&gt; | &lt;cmd&gt;" + " ".repeat(5) + "pipe output from one command into another");
     },
     whoami: function(){
       printLine(
@@ -570,34 +876,50 @@ try{
             '<div><span class="nf-key">Focus</span>: native desktop tools</div>' +
             '<div><span class="nf-key">Also</span>: hardware I wasn\'t supposed to talk to</div>' +
             '<div><span class="nf-key">Side quests</span>: a dozen, half-serious</div>' +
-            '<div class="nf-swatch">' +
-              '<span style="background:var(--bg);border:1px solid var(--border)"></span>' +
-              '<span style="background:var(--err)"></span>' +
-              '<span style="background:var(--ok)"></span>' +
-              '<span style="background:var(--warn)"></span>' +
-              '<span style="background:var(--accent)"></span>' +
-              '<span style="background:var(--fg)"></span>' +
+            '<div class="nf-tech">' +
+              '<span><img src="https://cdn.simpleicons.org/rust/F74C00" alt="Rust"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/kotlin/7F52FF" alt="Kotlin"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/typescript/3178C6" alt="TypeScript"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/react/61DAFB" alt="React Native"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/nodedotjs/5FA04E" alt="Node"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/c/A8B9CC" alt="C"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/zig/F7A41D" alt="Zig"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/jenkins/D33833" alt="Jenkins"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/postgresql/4169E1" alt="Postgres"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/neovim/57A143" alt="Neovim"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/nixos/5277C3" alt="NixOS"></span>' +
+              '<span><img src="https://cdn.simpleicons.org/tmux/1BB91F" alt="tmux"></span>' +
             '</div>' +
           '</div>' +
         '</div>'
       );
     },
-    ls: function(){
-      SECTIONS.forEach(function(s){
-        printLine('<span style="color:var(--accent)">' + esc(s.name) + '/</span>  <span class="hint">' + esc(s.desc) + '</span>');
-      });
-      printLine('<span class="hint">cd &lt;section&gt; to show it</span>');
+    ls: function(arg){
+      var segs = arg ? resolvePath(arg) : cwd.slice();
+      if(isDir(segs)){ listDir(segs); return; }
+      if(fileKind(segs)){ printLine(esc(segs[segs.length - 1])); return; }
+      printLine("ls: cannot access '" + esc(arg) + "': no such file or directory", "err");
     },
     cd: function(arg){
-      if(!arg){ printLine("usage: cd &lt;section | home&gt;", "err"); return; }
-      var lower = arg.toLowerCase();
-      if(lower === "home"){
-        printLine("back");
+      var lower = (arg || "").toLowerCase();
+      if(!lower || lower === "~" || lower === "home"){
+        cwd = [];
         showSection("home");
         return;
       }
-      var target = SECTIONS.find(function(s){ return s.name === lower; });
-      if(!target){ printLine("cd: " + esc(arg) + ": no such section", "err"); return; }
+      var segs = resolvePath(lower);
+      if(!isDir(segs)){
+        printLine("cd: " + esc(arg) + ": " + (fileKind(segs) ? "not a directory" : "no such file or directory"), "err");
+        return;
+      }
+      cwd = segs;
+      if(segs.length === 0){
+        showSection("home");
+        return;
+      }
+      var target = {name: segs[0]};
+      if(segs.length === 1){
       if(target.name === "about"){
         COMMANDS.whoami();
       } else if(target.name === "projects"){
@@ -617,13 +939,43 @@ try{
           '</div>'
         );
         printLine('<span class="hint">cat &lt;name&gt; for details, open &lt;name&gt; for the repo</span>');
+      } else if(target.name === "chill-corner"){
+        listDir(["chill-corner"]);
       } else if(target.name === "contact"){
         COMMANDS.cat("contact.txt");
+      }
       }
       showSection(target.name);
     },
     clear: function(){
       log.innerHTML = "";
+    },
+    vlc: function(arg){
+      if(!vlcApi){ printLine("vlc: player not loaded", "err"); return; }
+      vlcApi.exec(arg, false);
+    },
+    kill: function(arg){
+      var name = (arg || "").replace(/^.*\//, "").toLowerCase();
+      if(currentGame && GAME_EXES[currentGame][0] === name){
+        shellOut("[" + GAME_EXES[currentGame][1] + "] closed");
+        currentGame = null;
+        document.getElementById("game-panel-close").click();
+      } else {
+        printLine("kill: " + esc(arg || "") + ": no such process", "err");
+      }
+    },
+    grep: function(arg){
+      if(!arg){ printLine("usage: grep &lt;term&gt;  (or pipe: &lt;cmd&gt; | grep &lt;term&gt;)", "err"); return; }
+      var needle = arg.toLowerCase();
+      var hits = PROJECTS.filter(function(p){
+        return p.name.toLowerCase().indexOf(needle) !== -1 ||
+          p.stack.toLowerCase().indexOf(needle) !== -1 ||
+          p.desc.toLowerCase().indexOf(needle) !== -1;
+      });
+      if(hits.length === 0){ printLine("grep: no matches for " + esc(arg) + " in projects", "err"); return; }
+      hits.forEach(function(p){
+        printLine('<span style="color:var(--fg);font-weight:600">' + esc(p.name) + '</span> <span style="color:var(--accent)">[' + esc(p.stack) + ']</span> ' + esc(p.desc));
+      });
     },
     cat: function(arg){
       if(!arg){ printLine("usage: cat &lt;project | contact.txt&gt;", "err"); return; }
@@ -652,20 +1004,73 @@ try{
     }
   };
 
+  function dispatch(single){
+    var parts = single.trim().split(/\s+/);
+    var name = parts[0].toLowerCase();
+    var arg = parts.slice(1).join(" ");
+    var exePath = name.indexOf("/") !== -1 ? resolvePath(name) : null;
+    var exeKind = exePath && fileKind(exePath) === "exe" ? exePath : null;
+    var exeKey = exeKind && exeKind.join("/") !== "chill-corner/vlc" && ccGames().filter(function(k){ return GAME_EXES[k][0] === exeKind[exeKind.length - 1]; })[0];
+    if(COMMANDS[name]){
+      COMMANDS[name](arg);
+    } else if(exeKey){
+      launchGame(exeKey, true);
+    } else if(exeKind && exeKind.join("/") === "chill-corner/vlc"){
+      COMMANDS.vlc(arg);
+    } else if(exePath && isDir(exePath)){
+      printLine(esc(name) + ": is a directory", "err");
+    } else {
+      printLine(esc(name) + ": command not found. try 'help'", "err");
+    }
+  }
+
+  // "a; b" runs both, "a && b" runs b only if a printed no error
   function run(raw){
     var cmd = raw.trim();
     printCmd(cmd);
     if(cmd === ""){ return; }
     history.push(cmd);
     histPos = history.length;
-    var parts = cmd.split(/\s+/);
-    var name = parts[0].toLowerCase();
-    var arg = parts.slice(1).join(" ");
-    if(COMMANDS[name]){
-      COMMANDS[name](arg);
-    } else {
-      printLine(esc(name) + ": command not found. try 'help'", "err");
+
+    var parts = cmd.split(/(;|&&)/);
+    for(var i = 0; i < parts.length; i += 2){
+      var op = i > 0 ? parts[i - 1] : ";";
+      var seg = parts[i].trim();
+      if(seg === ""){ continue; }
+      if(op === "&&" && lastFailed){ break; }
+      lastFailed = false;
+      runPipeline(seg);
     }
+  }
+
+  function runPipeline(cmd){
+    var stages = cmd.split("|").map(function(s){ return s.trim(); });
+    if(stages.length === 1){
+      dispatch(stages[0]);
+      return;
+    }
+
+    var buffer = [];
+    var realPrintLine = printLine;
+    printLine = function(html, cls){ buffer.push({html: html, cls: cls}); };
+    try{ dispatch(stages[0]); } finally { printLine = realPrintLine; }
+
+    for(var i = 1; i < stages.length; i++){
+      var stParts = stages[i].split(/\s+/);
+      var stName = stParts[0].toLowerCase();
+      var stArg = stParts.slice(1).join(" ");
+      if(stName !== "grep"){
+        printLine(esc(stName) + ": command not found in pipeline", "err");
+        return;
+      }
+      if(!stArg){ printLine("usage: &lt;cmd&gt; | grep &lt;term&gt;", "err"); return; }
+      var needle = stArg.toLowerCase();
+      buffer = buffer.filter(function(line){
+        var text = line.html.replace(/<[^>]*>/g, "").toLowerCase();
+        return text.indexOf(needle) !== -1;
+      });
+    }
+    buffer.forEach(function(line){ printLine(line.html, line.cls); });
   }
 
   input.addEventListener("input", function(){
@@ -691,10 +1096,11 @@ try{
       var parts = input.value.split(/\s+/);
       var pool;
       if(parts.length <= 1){
-        pool = Object.keys(COMMANDS);
+        pool = Object.keys(COMMANDS).concat(dirEntries(cwd).filter(function(e){ return e[1] === "exe"; }).map(function(e){ return "./" + e[0]; }));
       } else {
         var cmdName = parts[0];
-        if(cmdName === "cd"){ pool = SECTIONS.map(function(s){ return s.name; }); }
+        if(cmdName === "cd"){ pool = dirEntries(cwd).filter(function(e){ return e[1] === "dir"; }).map(function(e){ return e[0]; }).concat(cwd.length ? [".."] : []); }
+        else if(cmdName === "ls"){ pool = dirEntries(cwd).map(function(e){ return e[0]; }); }
         else if(cmdName === "open"){ pool = PROJECTS.map(function(p){ return p.name; }); }
         else if(cmdName === "cat"){ pool = PROJECTS.map(function(p){ return p.name; }).concat(["contact.txt"]); }
         else { pool = []; }
@@ -703,7 +1109,9 @@ try{
       var matches = pool.filter(function(c){ return c.indexOf(prefix) === 0; });
       if(matches.length === 1){
         parts[parts.length - 1] = matches[0];
-        input.value = parts.join(" ") + " ";
+        // no trailing space after a directory, so you can keep typing the path
+        var isDirMatch = parts.length > 1 && dirEntries(cwd).some(function(e){ return e[0] === matches[0] && e[1] === "dir"; });
+        input.value = parts.join(" ") + (isDirMatch || (parts.length > 1 && matches[0] === "..") ? "" : " ");
       } else if(matches.length > 1){
         printLine('<span class="hint">' + matches.join("  ") + '</span>');
         body.scrollTop = body.scrollHeight;
@@ -712,7 +1120,7 @@ try{
     }
   });
   window.addEventListener("keydown", function(e){
-    if(e.code === "Space" && document.activeElement !== input){
+    if(e.code === "Space" && document.activeElement !== input && document.activeElement.id !== "canvas"){
       e.preventDefault();
       input.focus({preventScroll:true});
     }
@@ -735,6 +1143,552 @@ try{
     input.focus({preventScroll:true});
     body.scrollTop = body.scrollHeight;
   });
+
+  // ---- chill-corner: games + music ----
+  var gamePanel = document.getElementById("game-panel");
+  var gamePanelTitle = document.getElementById("game-panel-title");
+  var gamePanelBody = document.getElementById("game-panel-body");
+
+  var injectedStyles = {};
+  function ensureStyle(href){
+    if(injectedStyles[href]) return;
+    injectedStyles[href] = true;
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  var activeGameCleanup = null;
+  function switchGame(){
+    if(activeGameCleanup){ activeGameCleanup(); activeGameCleanup = null; }
+  }
+  document.getElementById("game-panel-close").addEventListener("click", function(){
+    // in fullscreen the x only leaves fullscreen; the game stays open
+    if(document.fullscreenElement === gamePanel){
+      if(currentGame){ shellEcho(GAME_EXES[currentGame][0] + " --windowed"); shellOut("[" + GAME_EXES[currentGame][1] + "] windowed"); }
+      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
+      return;
+    }
+    if(currentGame){
+      shellEcho("kill " + GAME_EXES[currentGame][0]);
+      shellOut("[" + GAME_EXES[currentGame][1] + "] closed");
+      currentGame = null;
+    }
+    gamePanel.style.display = "none";
+    switchGame();
+    gamePanelBody.innerHTML = "";
+  });
+
+  var gamePanelFullscreenBtn = document.getElementById("game-panel-fullscreen");
+  gamePanelFullscreenBtn.addEventListener("click", function(){
+    if(document.fullscreenElement === gamePanel){
+      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
+    }else if(gamePanel.requestFullscreen){
+      if(currentGame){ shellEcho(GAME_EXES[currentGame][0] + " --fullscreen"); shellOut("[" + GAME_EXES[currentGame][1] + "] fullscreen"); }
+      gamePanel.requestFullscreen().catch(function(){});
+    }
+  });
+  // Fixed-pixel games (minesweeper sprites, 2048 board): in fullscreen,
+  // zoom the mount so the game fills the screen, centered by the body flex.
+  function fitFullscreenGame(){
+    var mounts = [document.getElementById("ms-mount"), document.getElementById("g2048-mount")];
+    var isFs = document.fullscreenElement === gamePanel;
+    mounts.forEach(function(m){
+      if(!m) return;
+      m.style.zoom = "";
+      if(!isFs || m.style.display === "none" || m.parentNode !== gamePanelBody) return;
+      var cs = getComputedStyle(gamePanelBody);
+      var bar = gamePanel.querySelector(".titlebar");
+      var availW = gamePanel.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var availH = gamePanel.clientHeight - (bar ? bar.offsetHeight : 0) - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      var w = m.offsetWidth, h = m.offsetHeight;
+      if(!w || !h) return;
+      m.style.zoom = Math.max(1, Math.min(availW / w, availH / h));
+    });
+  }
+  document.addEventListener("fullscreenchange", function(){
+    var isFs = document.fullscreenElement === gamePanel;
+    gamePanel.classList.toggle("gp-fullscreen", isFs);
+    gamePanelFullscreenBtn.title = isFs ? "exit fullscreen" : "fullscreen";
+    fitFullscreenGame();
+    // leaving fullscreen restores the old scroll position; bring the game back into view
+    if(!isFs && gamePanel.style.display !== "none"){
+      setTimeout(function(){ gamePanel.scrollIntoView({block: "center"}); }, 50);
+    }
+  });
+  window.addEventListener("resize", fitFullscreenGame);
+  // fullscreenchange fires before the new layout exists and no window resize
+  // is guaranteed, so also refit whenever the panel body itself changes size.
+  if(window.ResizeObserver) new ResizeObserver(fitFullscreenGame).observe(gamePanelBody);
+  // difficulty change resizes the minesweeper board; refit after it rebuilds
+  gamePanelBody.addEventListener("click", function(){ setTimeout(fitFullscreenGame, 60); });
+
+  var msMount = document.getElementById("ms-mount");
+  var msInstance = null;
+  function msRecordTime(difficulty, seconds){
+    try{
+      var KEY = "ms_best_times";
+      var times = JSON.parse(localStorage.getItem(KEY)) || {};
+      if(times[difficulty] === undefined || seconds < times[difficulty]){
+        times[difficulty] = seconds;
+        localStorage.setItem(KEY, JSON.stringify(times));
+      }
+    }catch(e){}
+  }
+  msMount.querySelectorAll(".ms-diff-btn").forEach(function(b){
+    b.addEventListener("click", function(){
+      msMount.querySelectorAll(".ms-diff-btn").forEach(function(x){ x.classList.remove("active"); });
+      b.classList.add("active");
+      if(msInstance) msInstance.setDifficulty(b.getAttribute("data-diff"));
+    });
+  });
+  function openMinesweeper(){
+    switchGame();
+    gamePanelTitle.textContent = "minesweeper";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(msMount);
+    msMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/minesweeper/minesweeper.css");
+    if(msInstance){ msInstance.destroy(); msInstance = null; }
+    import("./assets/games/minesweeper/engine.js").then(function(mod){
+      msInstance = mod.initMinesweeper(msMount.querySelector(".ms-shell"), { onWin: msRecordTime });
+      activeGameCleanup = function(){ if(msInstance){ msInstance.destroy(); msInstance = null; } };
+    }).catch(function(err){ console.error("minesweeper failed to load", err); });
+  }
+
+  var g2048Mount = document.getElementById("g2048-mount");
+  var g2048Instance = null;
+  function open2048(){
+    switchGame();
+    gamePanelTitle.textContent = "2048";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(g2048Mount);
+    g2048Mount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/2048/2048.css");
+    if(g2048Instance){ g2048Instance.destroy(); g2048Instance = null; }
+    import("./assets/games/2048/render.js").then(function(mod){
+      g2048Instance = mod.init2048(g2048Mount);
+      activeGameCleanup = function(){ if(g2048Instance){ g2048Instance.destroy(); g2048Instance = null; } };
+    }).catch(function(err){ console.error("2048 failed to load", err); });
+  }
+
+  var fbMount = document.getElementById("fb-mount");
+  var fbEngine = null;
+  function openFlappyBird(){
+    switchGame();
+    gamePanelTitle.textContent = "flappy bird";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(fbMount);
+    fbMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    if(fbEngine){ fbEngine.destroy(); fbEngine = null; }
+    import("./assets/games/flappybird/loader.js").then(function(mod){
+      return mod.startFlappyBird(document.getElementById("fb-canvas"));
+    }).then(function(engine){
+      fbEngine = engine;
+      activeGameCleanup = function(){ if(fbEngine){ fbEngine.destroy(); fbEngine = null; } };
+    }).catch(function(err){ console.error("flappy bird failed to load", err); });
+  }
+
+  var skMount = document.getElementById("sk-mount");
+  var skInstance = null;
+  function openSudoku(){
+    switchGame();
+    gamePanelTitle.textContent = "sudoku";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(skMount);
+    skMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/sudoku/sudoku.css");
+    if(skInstance){ skInstance.destroy(); skInstance = null; }
+    import("./assets/games/sudoku/render.js").then(function(mod){
+      return mod.initSudoku(skMount);
+    }).then(function(instance){
+      skInstance = instance;
+      activeGameCleanup = function(){ if(skInstance){ skInstance.destroy(); skInstance = null; } };
+    }).catch(function(err){ console.error("sudoku failed to load", err); });
+  }
+
+  var doomMount = document.getElementById("doom-mount");
+  var doomStarted = false;
+  function startDoom(){
+    if(doomStarted) return;
+    doomStarted = true;
+    window.Module = {
+      canvas: document.getElementById("canvas"),
+      noInitialRun: true,
+      preRun: function(){
+        Module.FS.createPreloadedFile("", "doom1.wad", "assets/doom/doom1.wad", true, true);
+      },
+      onRuntimeInitialized: function(){
+        callMain(["-iwad", "doom1.wad", "-window", "-nogui", "-nomusic"]);
+      },
+      print: function(t){ console.log(t); },
+      printErr: function(t){ console.error(t); },
+      setStatus: function(){},
+      totalDependencies: 0,
+      monitorRunDependencies: function(){}
+    };
+    var s = document.createElement("script");
+    s.src = "assets/doom/websockets-doom.js";
+    document.body.appendChild(s);
+  }
+  function openDoom(){
+    switchGame();
+    gamePanelTitle.textContent = "doom";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(doomMount);
+    doomMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    startDoom();
+    setTimeout(function(){ document.getElementById("canvas").focus(); }, 300);
+  }
+
+  // WASD -> arrow keys, only while the doom canvas is focused
+  var WASD_MAP = {
+    KeyW: {code: "ArrowUp", key: "Up", keyCode: 38},
+    KeyS: {code: "ArrowDown", key: "Down", keyCode: 40},
+    KeyA: {code: "Comma", key: ",", keyCode: 188},
+    KeyD: {code: "Period", key: ".", keyCode: 190}
+  };
+  document.addEventListener("keydown", wasdRemap, true);
+  document.addEventListener("keyup", wasdRemap, true);
+  function wasdRemap(e){
+    if(document.activeElement.id !== "canvas") return;
+    var mapped = WASD_MAP[e.code];
+    if(!mapped) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    document.dispatchEvent(new KeyboardEvent(e.type, {
+      code: mapped.code, key: mapped.key, keyCode: mapped.keyCode, which: mapped.keyCode,
+      bubbles: true, cancelable: true
+    }));
+  }
+
+  var gbaMount = document.getElementById("gba-mount");
+  var gbaStarted = false;
+  var GBA_KEYS = {
+    ArrowUp: 6, ArrowDown: 7, ArrowLeft: 5, ArrowRight: 4,
+    KeyX: 0, KeyZ: 1,
+    Enter: 3, Backspace: 2,
+    KeyA: 9, KeyS: 8
+  };
+  function startGba(){
+    if(gbaStarted) return;
+    gbaStarted = true;
+    import("./assets/pokemon/gba_emulator.js").then(function(mod){
+      return mod.default("assets/pokemon/gba-emulator.wasm").then(function(){
+        var emu = new mod.WasmGbaEmulator("gba-canvas");
+        return fetch("assets/pokemon/firered.gba")
+          .then(function(r){ return r.arrayBuffer(); })
+          .then(function(buf){
+            emu.load_rom(new Uint8Array(buf));
+            document.addEventListener("keydown", function(e){
+              if(document.activeElement.id !== "gba-canvas") return;
+              var bit = GBA_KEYS[e.code];
+              if(bit === undefined) return;
+              e.preventDefault();
+              emu.set_button(bit, true);
+            });
+            document.addEventListener("keyup", function(e){
+              var bit = GBA_KEYS[e.code];
+              if(bit === undefined) return;
+              emu.set_button(bit, false);
+            });
+            function loop(){
+              emu.step_frame();
+              requestAnimationFrame(loop);
+            }
+            loop();
+          });
+      });
+    }).catch(function(err){
+      console.error("gba emulator failed to start", err);
+      gbaMount.querySelector(".hint").textContent = "failed to load: " + err.message;
+    });
+  }
+  function openPokemon(){
+    switchGame();
+    gamePanelTitle.textContent = "pokémon firered";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(gbaMount);
+    gbaMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    startGba();
+    setTimeout(function(){ document.getElementById("gba-canvas").focus(); }, 300);
+  }
+
+  // game key -> [exe name in ~/chill-corner/games, display name]
+  var GAME_EXES = {
+    minesweeper: ["minesweeper", "Minesweeper"],
+    sudoku: ["sudoku", "Sudoku"],
+    "2048": ["2048", "2048"],
+    flappybird: ["flappy-bird", "Flappy Bird"],
+    doom: ["doom", "Doom"],
+    pokemon: ["pokemon-firered", "Pokémon FireRed"]
+  };
+  var GAME_OPEN = {
+    minesweeper: openMinesweeper, sudoku: openSudoku, "2048": open2048,
+    flappybird: openFlappyBird, doom: openDoom, pokemon: openPokemon
+  };
+  var currentGame = null;
+  // viaShell: the command was typed, so the prompt line is already printed
+  function launchGame(key, viaShell){
+    var g = GAME_EXES[key];
+    if(!viaShell) shellEcho("~/chill-corner/games/" + g[0]);
+    printLine('<span class="hint">starting ' + esc(g[0]) + ' ...</span>');
+    GAME_OPEN[key]();
+    currentGame = key;
+    shellOut("[" + g[1] + "] window opened", "ok");
+  }
+  document.querySelectorAll(".chill-launch[data-game]").forEach(function(btn){
+    btn.addEventListener("click", function(){ launchGame(btn.getAttribute("data-game"), false); });
+  });
+  window.addEventListener("resize", fitFullscreenGame);
+  // fullscreenchange fires before the new layout exists and no window resize
+  // is guaranteed, so also refit whenever the panel body itself changes size.
+  if(window.ResizeObserver) new ResizeObserver(fitFullscreenGame).observe(gamePanelBody);
+  // difficulty change resizes the minesweeper board; refit after it rebuilds
+  gamePanelBody.addEventListener("click", function(){ setTimeout(fitFullscreenGame, 60); });
+
+  var msMount = document.getElementById("ms-mount");
+  var msInstance = null;
+  function msRecordTime(difficulty, seconds){
+    try{
+      var KEY = "ms_best_times";
+      var times = JSON.parse(localStorage.getItem(KEY)) || {};
+      if(times[difficulty] === undefined || seconds < times[difficulty]){
+        times[difficulty] = seconds;
+        localStorage.setItem(KEY, JSON.stringify(times));
+      }
+    }catch(e){}
+  }
+  msMount.querySelectorAll(".ms-diff-btn").forEach(function(b){
+    b.addEventListener("click", function(){
+      msMount.querySelectorAll(".ms-diff-btn").forEach(function(x){ x.classList.remove("active"); });
+      b.classList.add("active");
+      if(msInstance) msInstance.setDifficulty(b.getAttribute("data-diff"));
+    });
+  });
+  function openMinesweeper(){
+    switchGame();
+    gamePanelTitle.textContent = "minesweeper";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(msMount);
+    msMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/minesweeper/minesweeper.css");
+    if(msInstance){ msInstance.destroy(); msInstance = null; }
+    import("./assets/games/minesweeper/engine.js").then(function(mod){
+      msInstance = mod.initMinesweeper(msMount.querySelector(".ms-shell"), { onWin: msRecordTime });
+      activeGameCleanup = function(){ if(msInstance){ msInstance.destroy(); msInstance = null; } };
+    }).catch(function(err){ console.error("minesweeper failed to load", err); });
+  }
+
+  var g2048Mount = document.getElementById("g2048-mount");
+  var g2048Instance = null;
+  function open2048(){
+    switchGame();
+    gamePanelTitle.textContent = "2048";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(g2048Mount);
+    g2048Mount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/2048/2048.css");
+    if(g2048Instance){ g2048Instance.destroy(); g2048Instance = null; }
+    import("./assets/games/2048/render.js").then(function(mod){
+      g2048Instance = mod.init2048(g2048Mount);
+      activeGameCleanup = function(){ if(g2048Instance){ g2048Instance.destroy(); g2048Instance = null; } };
+    }).catch(function(err){ console.error("2048 failed to load", err); });
+  }
+
+  var fbMount = document.getElementById("fb-mount");
+  var fbEngine = null;
+  function openFlappyBird(){
+    switchGame();
+    gamePanelTitle.textContent = "flappy bird";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(fbMount);
+    fbMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    if(fbEngine){ fbEngine.destroy(); fbEngine = null; }
+    import("./assets/games/flappybird/loader.js").then(function(mod){
+      return mod.startFlappyBird(document.getElementById("fb-canvas"));
+    }).then(function(engine){
+      fbEngine = engine;
+      activeGameCleanup = function(){ if(fbEngine){ fbEngine.destroy(); fbEngine = null; } };
+    }).catch(function(err){ console.error("flappy bird failed to load", err); });
+  }
+
+  var skMount = document.getElementById("sk-mount");
+  var skInstance = null;
+  function openSudoku(){
+    switchGame();
+    gamePanelTitle.textContent = "sudoku";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(skMount);
+    skMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    ensureStyle("assets/games/sudoku/sudoku.css");
+    if(skInstance){ skInstance.destroy(); skInstance = null; }
+    import("./assets/games/sudoku/render.js").then(function(mod){
+      return mod.initSudoku(skMount);
+    }).then(function(instance){
+      skInstance = instance;
+      activeGameCleanup = function(){ if(skInstance){ skInstance.destroy(); skInstance = null; } };
+    }).catch(function(err){ console.error("sudoku failed to load", err); });
+  }
+
+  var doomMount = document.getElementById("doom-mount");
+  var doomStarted = false;
+  function startDoom(){
+    if(doomStarted) return;
+    doomStarted = true;
+    window.Module = {
+      canvas: document.getElementById("canvas"),
+      noInitialRun: true,
+      preRun: function(){
+        Module.FS.createPreloadedFile("", "doom1.wad", "assets/doom/doom1.wad", true, true);
+      },
+      onRuntimeInitialized: function(){
+        callMain(["-iwad", "doom1.wad", "-window", "-nogui", "-nomusic"]);
+      },
+      print: function(t){ console.log(t); },
+      printErr: function(t){ console.error(t); },
+      setStatus: function(){},
+      totalDependencies: 0,
+      monitorRunDependencies: function(){}
+    };
+    var s = document.createElement("script");
+    s.src = "assets/doom/websockets-doom.js";
+    document.body.appendChild(s);
+  }
+  function openDoom(){
+    switchGame();
+    gamePanelTitle.textContent = "doom";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(doomMount);
+    doomMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    startDoom();
+    setTimeout(function(){ document.getElementById("canvas").focus(); }, 300);
+  }
+
+  // WASD -> arrow keys, only while the doom canvas is focused
+  var WASD_MAP = {
+    KeyW: {code: "ArrowUp", key: "Up", keyCode: 38},
+    KeyS: {code: "ArrowDown", key: "Down", keyCode: 40},
+    KeyA: {code: "Comma", key: ",", keyCode: 188},
+    KeyD: {code: "Period", key: ".", keyCode: 190}
+  };
+  document.addEventListener("keydown", wasdRemap, true);
+  document.addEventListener("keyup", wasdRemap, true);
+  function wasdRemap(e){
+    if(document.activeElement.id !== "canvas") return;
+    var mapped = WASD_MAP[e.code];
+    if(!mapped) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    document.dispatchEvent(new KeyboardEvent(e.type, {
+      code: mapped.code, key: mapped.key, keyCode: mapped.keyCode, which: mapped.keyCode,
+      bubbles: true, cancelable: true
+    }));
+  }
+
+  var gbaMount = document.getElementById("gba-mount");
+  var gbaStarted = false;
+  var GBA_KEYS = {
+    ArrowUp: 6, ArrowDown: 7, ArrowLeft: 5, ArrowRight: 4,
+    KeyX: 0, KeyZ: 1,
+    Enter: 3, Backspace: 2,
+    KeyA: 9, KeyS: 8
+  };
+  function startGba(){
+    if(gbaStarted) return;
+    gbaStarted = true;
+    import("./assets/pokemon/gba_emulator.js").then(function(mod){
+      return mod.default("assets/pokemon/gba-emulator.wasm").then(function(){
+        var emu = new mod.WasmGbaEmulator("gba-canvas");
+        return fetch("assets/pokemon/firered.gba")
+          .then(function(r){ return r.arrayBuffer(); })
+          .then(function(buf){
+            emu.load_rom(new Uint8Array(buf));
+            document.addEventListener("keydown", function(e){
+              if(document.activeElement.id !== "gba-canvas") return;
+              var bit = GBA_KEYS[e.code];
+              if(bit === undefined) return;
+              e.preventDefault();
+              emu.set_button(bit, true);
+            });
+            document.addEventListener("keyup", function(e){
+              var bit = GBA_KEYS[e.code];
+              if(bit === undefined) return;
+              emu.set_button(bit, false);
+            });
+            function loop(){
+              emu.step_frame();
+              requestAnimationFrame(loop);
+            }
+            loop();
+          });
+      });
+    }).catch(function(err){
+      console.error("gba emulator failed to start", err);
+      gbaMount.querySelector(".hint").textContent = "failed to load: " + err.message;
+    });
+  }
+  function openPokemon(){
+    switchGame();
+    gamePanelTitle.textContent = "pokémon firered";
+    gamePanelBody.innerHTML = "";
+    gamePanelBody.appendChild(gbaMount);
+    gbaMount.style.display = "block";
+    gamePanel.style.display = "block";
+    gamePanel.scrollIntoView({block: "nearest"});
+    startGba();
+    setTimeout(function(){ document.getElementById("gba-canvas").focus(); }, 300);
+  }
+
+  document.querySelectorAll(".chill-launch[data-game]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var game = btn.getAttribute("data-game");
+      if(game === "minesweeper"){
+        openMinesweeper();
+      } else if(game === "sudoku"){
+        openSudoku();
+      } else if(game === "2048"){
+        open2048();
+      } else if(game === "flappybird"){
+        openFlappyBird();
+      } else if(game === "doom"){
+        openDoom();
+      } else if(game === "pokemon"){
+        openPokemon();
+      }
+    });
+  });
+
+  import("./assets/music/player.js").then(function(mod){
+    vlcApi = mod.initMusic(document.getElementById("music-mount"), document.getElementById("player-mount"), {
+      echo: shellEcho,
+      out: function(text, cls){ printLine('<span class="hint">[vlc]</span> ' + esc(text), cls === "err" ? "err" : (cls === "ok" ? "ok" : "")); body.scrollTop = body.scrollHeight; }
+    });
+  }).catch(function(err){ console.error("music player failed to load", err); });
+
   showSection("home");
 
   var bootLines = [
